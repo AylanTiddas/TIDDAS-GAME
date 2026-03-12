@@ -5969,6 +5969,109 @@ body.replay-active .replay-badge {
 }
 #back-to-modes-from-online-btn:hover { color: rgba(245,245,245,0.8); }
 
+/* ── Variant picker (online lobby) ────────────────────────── */
+.ol-variant-label {
+  font-size: 0.72rem; color: rgba(245,245,245,0.38); text-transform: uppercase;
+  letter-spacing: 0.09em; font-family: var(--font-ui,sans-serif);
+  text-align: center; margin-bottom: -2px;
+}
+.ol-variant-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+}
+.ol-vbtn {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 1px;
+  padding: 9px 12px; border-radius: 12px; cursor: pointer; text-align: left;
+  background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1);
+  transition: border-color 0.15s, background 0.15s;
+  font-family: var(--font-ui,sans-serif);
+}
+.ol-vbtn:hover { background: rgba(240,200,80,0.08); border-color: rgba(240,200,80,0.3); }
+.ol-vbtn.selected {
+  background: rgba(240,200,80,0.13);
+  border-color: rgba(240,200,80,0.7);
+  box-shadow: 0 0 0 2px rgba(240,200,80,0.12);
+}
+.ol-vbtn-name {
+  font-size: 0.83rem; font-weight: 700; color: rgba(245,245,245,0.88);
+  line-height: 1.2;
+}
+.ol-vbtn.selected .ol-vbtn-name { color: var(--ol-gold, #f0c850); }
+.ol-vbtn-desc {
+  font-size: 0.68rem; color: rgba(245,245,245,0.38); line-height: 1.2;
+}
+/* Host-only note for variant (hidden for guest) */
+.ol-variant-guest-note {
+  font-size: 0.72rem; text-align: center; color: rgba(245,245,245,0.4);
+  font-family: var(--font-ui,sans-serif); display: none;
+}
+
+/* ── In-game online status bar ────────────────────────────── */
+#online-game-bar {
+  display: none; /* shown only in online mode */
+  align-items: center; gap: 8px;
+  padding: 6px 10px; margin-bottom: 4px;
+  background: rgba(0,0,0,0.28); border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.09);
+  font-family: var(--font-ui,sans-serif); font-size: 0.75rem;
+  color: rgba(245,245,245,0.65);
+  flex-wrap: wrap;
+}
+#online-game-bar.ogb-visible { display: flex; }
+.ogb-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(255,255,255,0.22); transition: background 0.4s;
+}
+.ogb-dot.ok   { background: #3ddc5a; box-shadow: 0 0 5px #3ddc5a88; }
+.ogb-dot.warn { background: #f0c850; box-shadow: 0 0 5px #f0c85088; }
+.ogb-dot.err  { background: #f05050; box-shadow: 0 0 5px #f0505088; }
+.ogb-code {
+  font-weight: 900; letter-spacing: 0.14em; color: rgba(240,200,80,0.85);
+  font-size: 0.78rem;
+}
+.ogb-sep { opacity: 0.25; user-select: none; }
+.ogb-role { font-weight: 700; color: rgba(245,245,245,0.55); }
+.ogb-turn {
+  flex: 1; text-align: right; font-weight: 700;
+  transition: color 0.25s;
+}
+.ogb-turn.my-turn   { color: #3ddc5a; }
+.ogb-turn.opp-turn  { color: rgba(245,245,245,0.38); }
+.ogb-copy {
+  background: none; border: none; padding: 2px 5px; cursor: pointer;
+  color: rgba(240,200,80,0.55); font-size: 0.7rem; border-radius: 5px;
+  transition: color 0.15s;
+}
+.ogb-copy:hover { color: rgba(240,200,80,0.9); }
+/* Stale warning banner */
+#ogb-stale-warn {
+  display: none; width: 100%; text-align: center;
+  color: #f0c850; font-size: 0.7rem; font-weight: 700;
+  animation: ogb-pulse 1.4s ease-in-out infinite;
+}
+#ogb-stale-warn.visible { display: block; }
+@keyframes ogb-pulse {
+  0%,100% { opacity: 1; } 50% { opacity: 0.45; }
+}
+/* Reconnect link inside bar */
+.ogb-reconnect {
+  background: none; border: 1px solid rgba(240,80,80,0.4); border-radius: 6px;
+  color: #f07070; font-size: 0.7rem; padding: 2px 8px; cursor: pointer;
+  font-family: var(--font-ui,sans-serif); display: none;
+}
+.ogb-reconnect.visible { display: inline-block; }
+.ogb-reconnect:hover { background: rgba(240,80,80,0.1); }
+/* Waiting pulsing text when opponent's turn */
+.ogb-waiting-dots::after {
+  content: '';
+  animation: waiting-dots 1.5s steps(3, end) infinite;
+}
+@keyframes waiting-dots {
+  0%   { content: ''; }
+  33%  { content: '.'; }
+  66%  { content: '..'; }
+  100% { content: '...'; }
+}
+
 
 /* ── Name modal overlay ─────────────────────────────── */
 #online-name-modal-overlay {
@@ -11880,7 +11983,241 @@ html[data-theme="desert"] .ol-action-join .ol-action-icon,
 html[data-theme="desert"] body .ol-action-join .ol-action-icon  { color: #1a6e34 !important; }
 
 
-/* ===== FINAL MERGE HOTFIX: modal text readability safeguard ===== */
+/* ═══════════════════════════════════════════════════════════════════
+   BTP-DOT : Sélecteur de thème plateau — CSS entièrement manquant
+═══════════════════════════════════════════════════════════════════ */
+#btp-inline-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 8px 0 4px;
+}
+.btp-dot {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  background: transparent;
+  padding: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.12s, box-shadow 0.15s;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.btp-dot:hover { transform: scale(1.15); }
+.btp-dot.active {
+  border-color: rgba(240,200,80,0.85);
+  box-shadow: 0 0 0 3px rgba(240,200,80,0.22);
+  transform: scale(1.1);
+}
+.btp-dot-swatch {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  display: block;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.25);
+}
+.btp-sw-default  { background: linear-gradient(145deg, #c8902a 0%, #7a4e1a 100%); }
+.btp-sw-teal     { background: linear-gradient(145deg, #0ea5a0 0%, #0f766e 100%); }
+.btp-sw-wood     { background: linear-gradient(145deg, #a0562d 0%, #60300e 100%); }
+.btp-sw-parchment{ background: linear-gradient(145deg, #d4a96a 0%, #a87840 100%); }
+.btp-sw-obsidian { background: linear-gradient(145deg, #3a3a54 0%, #12121e 100%); }
+.btp-sw-berber   { background: linear-gradient(145deg, #c44a10 0%, #7c2a04 100%); }
+.btp-sw-night    { background: linear-gradient(145deg, #2258a0 0%, #0c1f3c 100%); }
+.btp-sw-sand     { background: linear-gradient(145deg, #e8cc80 0%, #c09830 100%); }
+.btp-sw-jade     { background: linear-gradient(145deg, #2d7a52 0%, #144228 100%); }
+.btp-sw-crimson  { background: linear-gradient(145deg, #a02030 0%, #5a0d18 100%); }
+/* Thèmes clairs : anneau doré remplacé par anneau ambré */
+[data-theme="kabylie"] .btp-dot.active,
+[data-theme="desert"]  .btp-dot.active,
+[data-theme="modern"]  .btp-dot.active {
+  border-color: rgba(146,64,14,0.75) !important;
+  box-shadow: 0 0 0 3px rgba(146,64,14,0.15) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   THÈMES CLAIRS : ol-vbtn (sélecteur de variante dans le lobby)
+═══════════════════════════════════════════════════════════════════ */
+[data-theme="kabylie"] .ol-vbtn,
+html[data-theme="kabylie"] body .ol-vbtn,
+[data-theme="desert"] .ol-vbtn,
+html[data-theme="desert"] body .ol-vbtn {
+  background: rgba(31,26,18,0.035) !important;
+  border-color: rgba(31,26,18,0.14) !important;
+}
+[data-theme="kabylie"] .ol-vbtn:hover,
+html[data-theme="kabylie"] body .ol-vbtn:hover,
+[data-theme="desert"] .ol-vbtn:hover,
+html[data-theme="desert"] body .ol-vbtn:hover {
+  background: rgba(200,132,26,0.09) !important;
+  border-color: rgba(200,132,26,0.38) !important;
+}
+[data-theme="kabylie"] .ol-vbtn.selected,
+html[data-theme="kabylie"] body .ol-vbtn.selected,
+[data-theme="desert"] .ol-vbtn.selected,
+html[data-theme="desert"] body .ol-vbtn.selected {
+  background: rgba(200,132,26,0.12) !important;
+  border-color: rgba(200,132,26,0.70) !important;
+  box-shadow: 0 0 0 2px rgba(200,132,26,0.12) !important;
+}
+[data-theme="kabylie"] .ol-vbtn-name,
+html[data-theme="kabylie"] body .ol-vbtn-name,
+[data-theme="desert"] .ol-vbtn-name,
+html[data-theme="desert"] body .ol-vbtn-name { color: #1c1409 !important; }
+[data-theme="kabylie"] .ol-vbtn.selected .ol-vbtn-name,
+html[data-theme="kabylie"] body .ol-vbtn.selected .ol-vbtn-name,
+[data-theme="desert"] .ol-vbtn.selected .ol-vbtn-name,
+html[data-theme="desert"] body .ol-vbtn.selected .ol-vbtn-name { color: #7c4a0a !important; }
+[data-theme="kabylie"] .ol-vbtn-desc,
+html[data-theme="kabylie"] body .ol-vbtn-desc,
+[data-theme="desert"] .ol-vbtn-desc,
+html[data-theme="desert"] body .ol-vbtn-desc { color: #6b5740 !important; }
+[data-theme="kabylie"] .ol-variant-label,
+html[data-theme="kabylie"] body .ol-variant-label,
+[data-theme="desert"] .ol-variant-label,
+html[data-theme="desert"] body .ol-variant-label { color: rgba(31,26,18,0.50) !important; }
+[data-theme="kabylie"] .ol-variant-guest-note,
+html[data-theme="kabylie"] body .ol-variant-guest-note,
+[data-theme="desert"] .ol-variant-guest-note,
+html[data-theme="desert"] body .ol-variant-guest-note { color: rgba(31,26,18,0.50) !important; }
+
+/* ── Lobby : textes généraux ────────────────────────────────────── */
+[data-theme="kabylie"] .ol-global-msg,
+[data-theme="desert"]  .ol-global-msg { color: rgba(31,26,18,0.55) !important; }
+[data-theme="kabylie"] .ol-status-line,
+[data-theme="desert"]  .ol-status-line { color: rgba(31,26,18,0.65) !important; }
+[data-theme="kabylie"] #online-status-text,
+[data-theme="desert"]  #online-status-text { color: rgba(31,26,18,0.70) !important; }
+[data-theme="kabylie"] .ol-divider-or,
+[data-theme="desert"]  .ol-divider-or { color: rgba(31,26,18,0.35) !important; }
+[data-theme="kabylie"] .ol-divider-or::before,
+[data-theme="kabylie"] .ol-divider-or::after,
+[data-theme="desert"]  .ol-divider-or::before,
+[data-theme="desert"]  .ol-divider-or::after { background: rgba(31,26,18,0.15) !important; }
+
+/* ── Input en thème désert (manquant) ───────────────────────────── */
+[data-theme="desert"] .ol-input,
+html[data-theme="desert"] body .ol-input {
+  background: rgba(255,252,245,0.95) !important;
+  border-color: rgba(120,70,20,0.25) !important;
+  color: #2c1810 !important;
+}
+[data-theme="desert"] .ol-input:focus,
+html[data-theme="desert"] body .ol-input:focus {
+  border-color: rgba(180,100,20,0.50) !important;
+  box-shadow: 0 0 0 3px rgba(180,100,20,0.08) !important;
+}
+[data-theme="desert"] .ol-code-input,
+html[data-theme="desert"] body .ol-code-input {
+  background: rgba(255,252,245,0.95) !important;
+  border-color: rgba(120,70,20,0.25) !important;
+  color: #2c1810 !important;
+}
+
+/* ── Matchup + code row ─────────────────────────────────────────── */
+[data-theme="kabylie"] .ol-matchup,
+[data-theme="desert"]  .ol-matchup {
+  background: rgba(31,26,18,0.04) !important;
+  border-color: rgba(31,26,18,0.10) !important;
+  color: #1c1409 !important;
+}
+[data-theme="kabylie"] .ol-vs,
+[data-theme="desert"]  .ol-vs { color: rgba(150,80,10,0.65) !important; }
+[data-theme="kabylie"] .ol-code-row,
+[data-theme="desert"]  .ol-code-row { background: rgba(31,26,18,0.04) !important; }
+[data-theme="kabylie"] .ol-code-label,
+[data-theme="desert"]  .ol-code-label { color: rgba(31,26,18,0.45) !important; }
+
+/* ── Rematch ──────────────────────────────────────────────────────*/
+[data-theme="kabylie"] .ol-rematch-chip,
+[data-theme="desert"]  .ol-rematch-chip {
+  background: rgba(31,26,18,0.05) !important;
+  border-color: rgba(31,26,18,0.15) !important;
+  color: rgba(31,26,18,0.55) !important;
+}
+[data-theme="kabylie"] .ol-rematch-btn,
+[data-theme="desert"]  .ol-rematch-btn {
+  background: rgba(31,26,18,0.05) !important;
+  border-color: rgba(31,26,18,0.18) !important;
+  color: #1c1409 !important;
+}
+[data-theme="kabylie"] .ol-rematch-btn:hover,
+[data-theme="desert"]  .ol-rematch-btn:hover { background: rgba(31,26,18,0.10) !important; }
+
+/* ── Salons récents ───────────────────────────────────────────────*/
+[data-theme="kabylie"] .online-room-chip,
+[data-theme="desert"]  .online-room-chip {
+  background: rgba(31,26,18,0.04) !important;
+  border-color: rgba(31,26,18,0.10) !important;
+}
+[data-theme="kabylie"] .online-room-chip:hover,
+[data-theme="desert"]  .online-room-chip:hover { background: rgba(31,26,18,0.08) !important; }
+[data-theme="kabylie"] .chip-vs,
+[data-theme="desert"]  .chip-vs { color: rgba(31,26,18,0.50) !important; }
+[data-theme="kabylie"] .chip-date,
+[data-theme="desert"]  .chip-date { color: rgba(31,26,18,0.35) !important; }
+[data-theme="kabylie"] .chip-code,
+[data-theme="desert"]  .chip-code { color: #92400e !important; }
+
+/* ── Barre de jeu en ligne (ogb-*) en thèmes clairs ──────────────*/
+[data-theme="kabylie"] #online-game-bar,
+[data-theme="desert"]  #online-game-bar {
+  background: rgba(31,26,18,0.05) !important;
+  border-color: rgba(31,26,18,0.12) !important;
+  color: rgba(31,26,18,0.60) !important;
+}
+[data-theme="kabylie"] .ogb-code,
+[data-theme="desert"]  .ogb-code { color: rgba(146,64,14,0.88) !important; }
+[data-theme="kabylie"] .ogb-role,
+[data-theme="desert"]  .ogb-role { color: rgba(31,26,18,0.50) !important; }
+[data-theme="kabylie"] .ogb-sep,
+[data-theme="desert"]  .ogb-sep { color: rgba(31,26,18,0.25) !important; }
+[data-theme="kabylie"] .ogb-turn.my-turn,
+[data-theme="desert"]  .ogb-turn.my-turn { color: #1a7e34 !important; }
+[data-theme="kabylie"] .ogb-turn.opp-turn,
+[data-theme="desert"]  .ogb-turn.opp-turn { color: rgba(31,26,18,0.35) !important; }
+[data-theme="kabylie"] .ogb-copy,
+[data-theme="desert"]  .ogb-copy { color: rgba(146,64,14,0.55) !important; }
+[data-theme="kabylie"] .ogb-copy:hover,
+[data-theme="desert"]  .ogb-copy:hover { color: rgba(146,64,14,0.90) !important; }
+[data-theme="kabylie"] #ogb-stale-warn,
+[data-theme="desert"]  #ogb-stale-warn { color: #92400e !important; }
+[data-theme="kabylie"] .ogb-reconnect,
+[data-theme="desert"]  .ogb-reconnect {
+  border-color: rgba(180,60,40,0.40) !important;
+  color: #b03020 !important;
+}
+
+/* ── MODERN : thème clair bleu ───────────────────────────────────*/
+[data-theme="modern"] .ol-vbtn {
+  background: rgba(15,23,42,0.04) !important;
+  border-color: rgba(15,23,42,0.14) !important;
+}
+[data-theme="modern"] .ol-vbtn:hover {
+  background: rgba(37,99,235,0.08) !important;
+  border-color: rgba(37,99,235,0.30) !important;
+}
+[data-theme="modern"] .ol-vbtn.selected {
+  background: rgba(37,99,235,0.10) !important;
+  border-color: rgba(37,99,235,0.60) !important;
+}
+[data-theme="modern"] .ol-vbtn-name { color: #1e3a8a !important; }
+[data-theme="modern"] .ol-vbtn.selected .ol-vbtn-name { color: #1d4ed8 !important; }
+[data-theme="modern"] .ol-vbtn-desc { color: #475569 !important; }
+[data-theme="modern"] .ol-variant-label,
+[data-theme="modern"] .ol-variant-guest-note { color: rgba(15,23,42,0.45) !important; }
+[data-theme="modern"] .ol-global-msg  { color: rgba(15,23,42,0.55) !important; }
+[data-theme="modern"] .ol-status-line { color: rgba(15,23,42,0.65) !important; }
+[data-theme="modern"] .ol-divider-or  { color: rgba(15,23,42,0.30) !important; }
+[data-theme="modern"] .ol-matchup     { color: #0f172a !important; }
+[data-theme="modern"] .ol-rematch-btn { color: #0f172a !important; }
+[data-theme="modern"] #online-game-bar {
+  background: rgba(15,23,42,0.05) !important;
+  border-color: rgba(15,23,42,0.12) !important;
+  color: rgba(15,23,42,0.60) !important;
+}
+[data-theme="modern"] .ogb-code  { color: #1d4ed8 !important; }
+[data-theme="modern"] .ogb-role  { color: rgba(15,23,42,0.50) !important; }
+[data-theme="modern"] .ogb-turn.my-turn  { color: #166534 !important; }
+[data-theme="modern"] .ogb-turn.opp-turn { color: rgba(15,23,42,0.35) !important; }
 .rules-book,
 .rules-book .rules-content,
 .about-book,
@@ -12634,6 +12971,28 @@ Patrimoine Amazigh • Idles Amaziɣ
          autocomplete="nickname" inputmode="text"
          data-i18n-placeholder="onlineNamePlaceholder" placeholder="Ton pseudo…" />
 
+  <!-- Sélecteur de variante (hôte uniquement) -->
+  <p class="ol-variant-label" id="ol-variant-label" data-i18n="onlineVariantLabel">Choisir le jeu</p>
+  <div class="ol-variant-grid" id="ol-variant-grid">
+    <button class="ol-vbtn selected" type="button" data-variant="TIDDEST-no-diag">
+      <span class="ol-vbtn-name" data-i18n="TIDDESTTitle">Tiddest</span>
+      <span class="ol-vbtn-desc">5×5 · moulins</span>
+    </button>
+    <button class="ol-vbtn" type="button" data-variant="bessif-TIDDEST">
+      <span class="ol-vbtn-name" data-i18n="bessifShortTitle">Tiddest n tlata</span>
+      <span class="ol-vbtn-desc">3 pions · tic-tac-toe</span>
+    </button>
+    <button class="ol-vbtn" type="button" data-variant="Kabylian-draughts">
+      <span class="ol-vbtn-name" data-i18n="dammaShortTitle">Damma Kabyle</span>
+      <span class="ol-vbtn-desc">Dames traditionnelles</span>
+    </button>
+    <button class="ol-vbtn" type="button" data-variant="Kabylian-draughts-bessif">
+      <span class="ol-vbtn-name" data-i18n="dammaBessifShortTitle">Damma Misère</span>
+      <span class="ol-vbtn-desc">Dames inversées</span>
+    </button>
+  </div>
+  <p class="ol-variant-guest-note" id="ol-variant-guest-note" data-i18n="onlineVariantGuestNote">La variante est choisie par l'hôte</p>
+
   <!-- Actions principales -->
   <button class="ol-big-btn ol-btn-create" id="online-create-room" type="button">
     + <span data-i18n="onlineCreate">Créer une partie</span>
@@ -12862,6 +13221,18 @@ Vous jouez avec les&nbsp;:
 </div>
 </div>
 <div class="center-column">
+<!-- Barre de statut en ligne (visible uniquement en mode online) -->
+<div id="online-game-bar">
+  <span class="ogb-dot" id="ogb-dot"></span>
+  <span class="ogb-code" id="ogb-code">——</span>
+  <button class="ogb-copy" id="ogb-copy-code" title="Copier le code">⎘</button>
+  <span class="ogb-sep">·</span>
+  <span class="ogb-role" id="ogb-role"></span>
+  <span class="ogb-sep">·</span>
+  <span class="ogb-turn" id="ogb-turn"></span>
+  <span id="ogb-stale-warn"></span>
+  <button class="ogb-reconnect" id="ogb-reconnect" type="button" data-i18n="ogbReconnect">Reconnecter</button>
+</div>
 <div class="game-info-display">
 <span id="game-variant-info"></span>
 <span id="game-difficulty-info"></span>
@@ -13898,6 +14269,63 @@ function onlineDisconnect() {
   online.suppressSend = false;
   online.lastSeenRev = -1;
   online.fetching = false;
+  try { _updateOnlineGameBar(); } catch(_) {}
+}
+
+// ── In-game online status bar ─────────────────────────────────
+let _lastPeerRevTs = Date.now(); // updated each time we see a new rev from opponent
+
+function _updateOnlineGameBar() {
+  const bar = document.getElementById('online-game-bar');
+  if (!bar) return;
+  const active = (gameMode === 'online' && online.connected && online.matchId);
+  bar.classList.toggle('ogb-visible', !!active);
+  if (!active) return;
+
+  // ── Connection dot ─────────────────────────────
+  const dot = document.getElementById('ogb-dot');
+  const staleWarn = document.getElementById('ogb-stale-warn');
+  const reconnBtn = document.getElementById('ogb-reconnect');
+  const elapsed = Date.now() - _lastPeerRevTs;
+  let dotState = 'ok';
+  if (elapsed > 55000)      dotState = 'err';
+  else if (elapsed > 22000) dotState = 'warn';
+  if (dot) { dot.className = 'ogb-dot ' + dotState; }
+
+  // Stale warning
+  const staleVisible = elapsed > 22000;
+  if (staleWarn) {
+    staleWarn.textContent = staleVisible ? t('ogbStaleWarn', '⚠ Connexion perdue ?') : '';
+    staleWarn.classList.toggle('visible', staleVisible);
+  }
+  // Reconnect button only when truly stuck (>60s)
+  if (reconnBtn) reconnBtn.classList.toggle('visible', elapsed > 60000);
+
+  // ── Room code ──────────────────────────────────
+  const codeEl = document.getElementById('ogb-code');
+  if (codeEl) codeEl.textContent = online.room || '——';
+
+  // ── My role ────────────────────────────────────
+  const roleEl = document.getElementById('ogb-role');
+  if (roleEl && online.role) {
+    const roleKey = t('ogbRole', 'J{n}').replace('{n}', online.role);
+    roleEl.textContent = roleKey;
+  }
+
+  // ── Turn indicator ─────────────────────────────
+  const turnEl = document.getElementById('ogb-turn');
+  if (turnEl && state) {
+    const myTurn = isMyTurnOnline();
+    if (state.winner) {
+      turnEl.textContent = ''; turnEl.className = 'ogb-turn';
+    } else if (myTurn) {
+      turnEl.innerHTML = t('ogbMyTurn', 'Mon tour');
+      turnEl.className = 'ogb-turn my-turn';
+    } else {
+      turnEl.innerHTML = `<span class="ogb-waiting-dots">${t('ogbOppTurn','Adversaire')}</span>`;
+      turnEl.className = 'ogb-turn opp-turn';
+    }
+  }
 }
 
 async function _fetchMatchByCode(code) {
@@ -14035,6 +14463,7 @@ function _startPolling() {
       if (rev !== online.lastSeenRev) {
         online.lastSeenRev = rev;
         _pollNoChangeCount = 0;
+        _lastPeerRevTs = Date.now(); // track opponent activity
         // Switch back to fast polling on activity
         if (_pollCurrentInterval !== _POLL_FAST_MS) {
           _pollCurrentInterval = _POLL_FAST_MS;
@@ -14060,6 +14489,7 @@ function _startPolling() {
       _setOnlineStatus(t('onlineNetworkError', "Erreur réseau Back4App. Vérifie les permissions (CLP) et ta connexion."));
     } finally {
       online.fetching = false;
+      try { _updateOnlineGameBar(); } catch(_) {}
     }
   };
 
@@ -14441,6 +14871,7 @@ function onlineApplyState(msg) {
 
     // Persist locally (but do not re-broadcast)
     saveGame();
+    try { _updateOnlineGameBar(); } catch(_) {}
   } catch (e) {
 } finally {
     online.suppressSend = false;
@@ -14989,6 +15420,14 @@ woSubDefeat: "— Fin de partie —",
 woSubVictory: "— Victoire —",
 
 onlineTitle: "Multijoueur en ligne",
+onlineVariantLabel: "Choisir le jeu",
+onlineVariantGuestNote: "La variante est choisie par l'hôte",
+ogbMyTurn: "Mon tour",
+ogbOppTurn: "Adversaire…",
+ogbWaiting: "En attente",
+ogbStaleWarn: "⚠ Connexion perdue ?",
+ogbReconnect: "Reconnecter",
+ogbRole: "J{n}",
 onlineProfileLabel: "Votre pseudo",
 onlineSalonLabel: "Salon de jeu",
 onlineProfileTitle: "Profil",
@@ -15400,6 +15839,14 @@ woSubDefeat: "— Taggara n wurar —",
 woSubVictory: "— Rbeḥ —",
 
 onlineTitle: "Urar d umeddakul s lebɛid",
+onlineVariantLabel: "Fren urar",
+onlineVariantGuestNote: "Amuqren n taslaḍt i yefranen urar",
+ogbMyTurn: "Adur-iw",
+ogbOppTurn: "Umeddakul…",
+ogbWaiting: "Ttagad",
+ogbStaleWarn: "⚠ Tuqqna teccur?",
+ogbReconnect: "Ales tuqqna",
+ogbRole: "J{n}",
 onlineProfileLabel: "Nekkwa",
 onlineSalonLabel: "Taslaḍt n wurar",
 onlineProfileTitle: "Amaɣnu",
@@ -15835,6 +16282,14 @@ woSubDefeat: "— Game over —",
 woSubVictory: "— Victory —",
 
 onlineTitle: "Online multiplayer",
+onlineVariantLabel: "Choose game",
+onlineVariantGuestNote: "The host chooses the game variant",
+ogbMyTurn: "My turn",
+ogbOppTurn: "Opponent…",
+ogbWaiting: "Waiting",
+ogbStaleWarn: "⚠ Connection lost?",
+ogbReconnect: "Reconnect",
+ogbRole: "P{n}",
 onlineProfileLabel: "Your nickname",
 onlineSalonLabel: "Game room",
 onlineProfileTitle: "Profile",
@@ -16941,7 +17396,7 @@ function td_showStatus(key) {
 }
 
 function td_updateStatus() {
-  if (state.winner) { statusDiv.textContent = translations[currentLanguage].statusGameOver; return; }
+  if (state.winner) { statusDiv.textContent = translations[currentLanguage].statusGameOver; try { _updateOnlineGameBar(); } catch(_) {} return; }
   const isInverse = !!(cfg().tdInverseWin);
   const pName = state.turn === 1 ? p1DisplayName.textContent.split(' (')[0] : p2DisplayName.textContent.split(' (')[0];
   if (td_phase === 'jump') {
@@ -16951,6 +17406,7 @@ function td_updateStatus() {
   } else {
     statusDiv.textContent = (translations[currentLanguage].statusMovePhase || 'Déplacement :') + ' ' + pName;
   }
+  try { _updateOnlineGameBar(); } catch(_) {}
 }
 
 // IA pour les dames Kabyle
@@ -17604,6 +18060,7 @@ p2DisplayName.textContent = `${player2Name} (${p2ColorName})`;
 function updateStatus() {
 if (state.winner) {
 statusDiv.textContent = translations[currentLanguage].statusGameOver;
+try { _updateOnlineGameBar(); } catch(_) {}
 return;
 }
 if (cfg().isKabylianDraughts) {
@@ -17630,6 +18087,7 @@ const currentPlayerName = (state.turn === 1) ? p1NameForStatus: p2NameForStatus;
 const phaseKey = state.phase === 'placement' ? 'statusPlacementPhase': 'statusMovePhase';
 statusDiv.textContent = `${translations[currentLanguage][phaseKey]} ${currentPlayerName}.`;
 }
+try { _updateOnlineGameBar(); } catch(_) {}
 }
 
 function updateActivePlayerDisplay() {
@@ -22371,6 +22829,66 @@ if (onlineBtn) {
       onlineEls.btnBack.style.touchAction = 'manipulation';
     }
 
+    // ── Variant picker (host only) ────────────────────────────
+    const variantGrid = document.getElementById('ol-variant-grid');
+    const variantGuestNote = document.getElementById('ol-variant-guest-note');
+    const variantLabel = document.getElementById('ol-variant-label');
+
+    const _syncVariantPickerVisibility = () => {
+      const connected = online.connected;
+      const isHost = online.isHost;
+      // Hide picker + label when connected as guest; show guest note instead
+      if (variantGrid)     variantGrid.style.display    = (!connected || isHost) ? '' : 'none';
+      if (variantLabel)    variantLabel.style.display   = (!connected || isHost) ? '' : 'none';
+      if (variantGuestNote) variantGuestNote.style.display = (connected && !isHost) ? '' : 'none';
+    };
+    _syncVariantPickerVisibility();
+
+    if (variantGrid) {
+      // Mark current variant as selected
+      const _refreshVariantBtns = () => {
+        variantGrid.querySelectorAll('.ol-vbtn').forEach(btn => {
+          btn.classList.toggle('selected', btn.dataset.variant === variant);
+        });
+      };
+      _refreshVariantBtns();
+
+      variantGrid.addEventListener('click', (e) => {
+        const btn = e.target.closest('.ol-vbtn');
+        if (!btn || online.connected) return; // locked once connected
+        variant = btn.dataset.variant;
+        _refreshVariantBtns();
+      });
+    }
+
+    // ── Copy code from in-game bar ────────────────────────────
+    const ogbCopy = document.getElementById('ogb-copy-code');
+    if (ogbCopy) {
+      ogbCopy.onclick = async () => {
+        const c = (online.room || '').trim();
+        if (!c) return;
+        try { await navigator.clipboard.writeText(c); } catch(_) {
+          try { const i=document.createElement('input'); i.value=c; document.body.appendChild(i); i.select(); document.execCommand('copy'); document.body.removeChild(i); } catch(__) {}
+        }
+        const orig = ogbCopy.textContent;
+        ogbCopy.textContent = '✅';
+        setTimeout(() => { ogbCopy.textContent = orig; }, 1600);
+        if (typeof showToast === 'function') showToast(t('onlineCodeCopied','Code copié ✅'));
+      };
+    }
+
+    // ── Reconnect button (in-game bar) ────────────────────────
+    const ogbReconn = document.getElementById('ogb-reconnect');
+    if (ogbReconn) {
+      ogbReconn.onclick = () => {
+        const c = (online.room || '').trim();
+        if (!c) return;
+        _lastPeerRevTs = Date.now(); // reset staleness clock
+        onlineDisconnect();
+        onlineConnectToRoom(c, false);
+      };
+    }
+
     // Disable actions if not configured
     const __onlineOk = _isBack4AppConfigured();
     if (onlineEls.btnCreate)  onlineEls.btnCreate.disabled  = !__onlineOk;
@@ -22387,6 +22905,9 @@ if (onlineBtn) {
       } catch(_) {}
       const code = _randCode(4);
       _showStatusCard(true);
+      // Lock variant picker once creating
+      if (variantGrid) variantGrid.querySelectorAll('.ol-vbtn').forEach(b => b.style.pointerEvents = 'none');
+      _lastPeerRevTs = Date.now();
       onlineConnectToRoom(code, true);
     };
 
@@ -22398,6 +22919,7 @@ if (onlineBtn) {
         return;
       }
       _showStatusCard(true);
+      _lastPeerRevTs = Date.now();
       onlineConnectToRoom(code, false);
     };
 
