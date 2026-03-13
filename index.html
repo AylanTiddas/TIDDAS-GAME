@@ -6315,21 +6315,25 @@ transform: scale(1.06);
 .toast {
 position: fixed;
 left: 50%;
-transform: translateX(-50%) translateY(12px);
-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-background: rgba(0,0,0,0.82);
-border: 1px solid rgba(240,200,80,0.35);
-color: var(--text-main);
-padding: 10px 14px;
-border-radius: 14px;
+transform: translateX(-50%) translateY(20px);
+bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+background: rgba(10,6,2,0.96);
+border: 1.5px solid rgba(240,200,80,0.75);
+color: #fff8e8;
+padding: 13px 20px;
+border-radius: 16px;
 max-width: min(92vw, 720px);
 width: fit-content;
 opacity: 0;
 pointer-events: none;
 z-index: 6500;
-transition: opacity 0.22s ease, transform 0.22s ease;
-font-size: 0.92rem;
-line-height: 1.25;
+transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+font-size: 1rem;
+font-weight: 600;
+line-height: 1.35;
+box-shadow: 0 8px 28px rgba(0,0,0,0.70), 0 0 0 1px rgba(240,200,80,0.18);
+text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+letter-spacing: 0.2px;
 }
 .toast.show {
 opacity: 1;
@@ -7297,9 +7301,11 @@ opacity: 0.90 !important;
 
 /* ── 13. Toasts ── */
 .toast {
-font-size: 1rem !important;
-font-weight: 600 !important;
-padding: 12px 18px !important;
+font-size: 1.05rem !important;
+font-weight: 700 !important;
+padding: 14px 22px !important;
+border-color: rgba(240,200,80,0.80) !important;
+box-shadow: 0 10px 32px rgba(0,0,0,0.75), 0 0 0 1px rgba(240,200,80,0.22) !important;
 }
 
 /* ── 14. Modales ── */
@@ -7925,25 +7931,25 @@ scrollbar-width: none !important;
 
 /* Panel conteneur principal */
 .stray-panel {
-background: rgba(14, 10, 8, 0.92);
+background: rgba(14, 10, 8, 0.94);
 border: 1px solid rgba(240, 200, 80, 0.22);
-border-radius: 18px;
+border-radius: 22px;
 padding: 0;
-min-width: 240px;
-max-width: 280px;
+min-width: 260px;
+max-width: 310px;
 box-shadow:
-0 24px 60px rgba(0,0,0,0.55),
-0 0 0 1px rgba(255,255,255,0.04),
-inset 0 1px 0 rgba(255,255,255,0.06);
-backdrop-filter: blur(20px);
--webkit-backdrop-filter: blur(20px);
+0 28px 70px rgba(0,0,0,0.60),
+0 0 0 1px rgba(255,255,255,0.05),
+inset 0 1px 0 rgba(255,255,255,0.07);
+backdrop-filter: blur(24px);
+-webkit-backdrop-filter: blur(24px);
 overflow: hidden;
-animation: strayIn 0.22s cubic-bezier(0.2,0.9,0.2,1) both;
+animation: strayIn 0.24s cubic-bezier(0.2,0.9,0.2,1) both;
 }
 @keyframes strayIn {
 from {
 opacity: 0;
-transform: translateY(10px) scale(0.96);
+transform: translateY(12px) scale(0.95);
 }
 to {
 opacity: 1;
@@ -7953,14 +7959,19 @@ transform: translateY(0) scale(1);
 
 [data-theme="kabylie"] .stray-panel,
 [data-theme="desert"] .stray-panel {
-background: rgba(255, 253, 248, 0.95);
-border-color: rgba(31,26,18,0.14);
-box-shadow: 0 24px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04);
+background: rgba(255, 253, 246, 0.97);
+border-color: rgba(31,26,18,0.12);
+box-shadow: 0 28px 70px rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.04);
+}
+[data-theme="modern"] .stray-panel {
+background: rgba(248, 250, 255, 0.97);
+border-color: rgba(15,23,42,0.10);
+box-shadow: 0 28px 70px rgba(15,23,42,0.14), 0 0 0 1px rgba(15,23,42,0.05);
 }
 [data-theme="nuit"] .stray-panel,
 [data-theme="glass"] .stray-panel,
 [data-theme="modern-dark"] .stray-panel {
-background: rgba(8, 6, 20, 0.94);
+background: rgba(8, 6, 20, 0.95);
 }
 
 /* Header du panel */
@@ -7968,12 +7979,15 @@ background: rgba(8, 6, 20, 0.94);
 display: flex;
 align-items: center;
 justify-content: space-between;
-padding: 0.9rem 1rem 0.7rem;
+padding: 1rem 1.1rem 0.8rem;
 border-bottom: 1px solid rgba(240,200,80,0.14);
 }
 [data-theme="kabylie"] .stray-header,
 [data-theme="desert"] .stray-header {
 border-bottom-color: rgba(31,26,18,0.10);
+}
+[data-theme="modern"] .stray-header {
+border-bottom-color: rgba(15,23,42,0.08);
 }
 
 .stray-title {
@@ -7993,14 +8007,14 @@ background: none !important;
 border: none !important;
 box-shadow: none !important;
 color: var(--text-muted) !important;
-font-size: 0.95rem !important;
+font-size: 1rem !important;
 padding: 0.15rem 0.4rem !important;
 min-height: unset !important;
-width: 28px !important;
-height: 28px !important;
-border-radius: 8px !important;
+width: 30px !important;
+height: 30px !important;
+border-radius: 10px !important;
 cursor: pointer;
-opacity: 0.6;
+opacity: 0.55;
 display: flex;
 align-items: center;
 justify-content: center;
@@ -8008,12 +8022,17 @@ transition: opacity 0.15s, background 0.15s;
 }
 .stray-close-btn:hover {
 opacity: 1;
-background: rgba(255,255,255,0.10) !important;
+background: rgba(255,255,255,0.12) !important;
+}
+[data-theme="kabylie"] .stray-close-btn:hover,
+[data-theme="desert"] .stray-close-btn:hover,
+[data-theme="modern"] .stray-close-btn:hover {
+background: rgba(0,0,0,0.07) !important;
 }
 
 /* Sections */
 .stray-section {
-padding: 0.65rem 1rem;
+padding: 0.75rem 1.1rem;
 border-bottom: 1px solid rgba(240,200,80,0.08);
 }
 .stray-section:last-child {
@@ -8026,20 +8045,20 @@ border-bottom-color: rgba(31,26,18,0.07);
 
 .stray-section-label {
 display: block;
-font-size: 0.68rem;
-font-weight: 700;
+font-size: 0.70rem;
+font-weight: 800;
 text-transform: uppercase;
-letter-spacing: 0.12em;
+letter-spacing: 0.14em;
 color: var(--text-muted);
-opacity: 0.55;
-margin-bottom: 0.5rem;
+opacity: 0.65;
+margin-bottom: 0.6rem;
 }
 
 /* Grille de boutons dans le tray */
 .stray-grid {
 display: grid;
 grid-template-columns: 1fr 1fr;
-gap: 0.4rem;
+gap: 0.5rem;
 }
 
 /* Boutons items */
@@ -8048,54 +8067,66 @@ display: flex !important;
 flex-direction: column !important;
 align-items: center !important;
 justify-content: center !important;
-gap: 0.3rem !important;
-padding: 0.7rem 0.4rem !important;
-border-radius: 12px !important;
-min-height: 64px !important;
-border: 1px solid rgba(255,255,255,0.07) !important;
-background: rgba(255,255,255,0.04) !important;
+gap: 0.4rem !important;
+padding: 0.9rem 0.5rem !important;
+border-radius: 16px !important;
+min-height: 78px !important;
+border: 1.5px solid rgba(255,255,255,0.10) !important;
+background: rgba(255,255,255,0.06) !important;
 color: var(--text-main) !important;
-box-shadow: none !important;
+box-shadow: 0 2px 8px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.06) !important;
 cursor: pointer;
-transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+transition: background 0.15s ease, border-color 0.15s ease, transform 0.13s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s ease;
 white-space: nowrap;
 font-family: var(--font-body);
 }
 .stray-item:hover {
-background: rgba(240,200,80,0.12) !important;
-border-color: rgba(240,200,80,0.30) !important;
-transform: translateY(-1px) !important;
-box-shadow: 0 4px 12px rgba(0,0,0,0.20) !important;
+background: rgba(240,200,80,0.14) !important;
+border-color: rgba(240,200,80,0.35) !important;
+transform: translateY(-2px) !important;
+box-shadow: 0 6px 18px rgba(0,0,0,0.28) !important;
 }
 .stray-item:active {
 transform: scale(0.95) !important;
 }
 .stray-item.active {
-background: rgba(240,200,80,0.18) !important;
-border-color: rgba(240,200,80,0.45) !important;
+background: rgba(240,200,80,0.20) !important;
+border-color: rgba(240,200,80,0.50) !important;
 }
 
 [data-theme="kabylie"] .stray-item,
 [data-theme="desert"] .stray-item {
-border-color: rgba(31,26,18,0.09) !important;
-background: rgba(31,26,18,0.03) !important;
+border-color: rgba(31,26,18,0.10) !important;
+background: rgba(255,255,255,0.70) !important;
 color: var(--text-main) !important;
+box-shadow: 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.80) !important;
 }
 [data-theme="kabylie"] .stray-item:hover,
 [data-theme="desert"] .stray-item:hover {
-background: rgba(30,136,229,0.08) !important;
-border-color: rgba(30,136,229,0.22) !important;
+background: rgba(255,255,255,0.92) !important;
+border-color: rgba(30,136,229,0.28) !important;
+box-shadow: 0 6px 18px rgba(0,0,0,0.12) !important;
+}
+[data-theme="modern"] .stray-item {
+border-color: rgba(15,23,42,0.09) !important;
+background: rgba(255,255,255,0.72) !important;
+box-shadow: 0 2px 8px rgba(15,23,42,0.07), inset 0 1px 0 rgba(255,255,255,0.80) !important;
+}
+[data-theme="modern"] .stray-item:hover {
+background: rgba(255,255,255,0.95) !important;
+border-color: rgba(37,99,235,0.25) !important;
 }
 
 .stray-icon {
-font-size: 1.45rem;
+font-size: 1.6rem;
 line-height: 1;
 display: block;
+letter-spacing: 2px;
 }
 .stray-item-label {
-font-size: 0.72rem !important;
+font-size: 0.80rem !important;
 font-weight: 700 !important;
-letter-spacing: 0.02em;
+letter-spacing: 0.04em;
 color: inherit;
 display: block;
 }
@@ -9751,11 +9782,36 @@ h1::after {
     inset 0 0 22px rgba(0,0,0,0.65),
     inset 0 2px 0 rgba(255,255,255,0.035) !important;
 }
-/* Plateau morpion carré : fond sombre, pas de blanc opaque aux coins droits */
+/* Plateau morpion carré : coins arrondis, overflow masqué */
 .game-board.ntlata-board {
-  background: var(--nt-board-bg, #1a0f06) !important;
   border-radius: 10px !important;
   overflow: hidden !important;
+}
+/* Fond sombre UNIQUEMENT quand un thème de plateau est explicitement sélectionné */
+.game-board.ntlata-board[data-board-theme] {
+  background: var(--nt-board-bg, #1a0f06) !important;
+}
+/* Fond ntlata par thème général (mode plateau "défaut") */
+[data-theme="kabylie"] .game-board.ntlata-board:not([data-board-theme]) {
+  background: #faf5e8 !important;
+}
+[data-theme="desert"] .game-board.ntlata-board:not([data-board-theme]) {
+  background: #f5ead0 !important;
+}
+[data-theme="nuit"] .game-board.ntlata-board:not([data-board-theme]) {
+  background: #0e0c2a !important;
+}
+[data-theme="glass"] .game-board.ntlata-board:not([data-board-theme]) {
+  background: rgba(20,16,48,0.85) !important;
+}
+[data-theme="contrast"] .game-board.ntlata-board:not([data-board-theme]) {
+  background: #000000 !important;
+}
+[data-theme="modern"] .game-board.ntlata-board:not([data-board-theme]) {
+  background: #f0f4ff !important;
+}
+[data-theme="modern-dark"] .game-board.ntlata-board:not([data-board-theme]) {
+  background: #0d1626 !important;
 }
 .game-board-container.ntlata-container-active {
   border-radius: 16px !important;
@@ -11998,50 +12054,53 @@ html[data-theme="desert"] body .ol-action-join .ol-action-icon  { color: #1a6e34
    BTP-DOT : Sélecteur de thème plateau — CSS entièrement manquant
 ═══════════════════════════════════════════════════════════════════ */
 #btp-inline-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  padding: 8px 0 4px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+  padding: 10px 0 6px;
 }
 .btp-dot {
-  width: 34px; height: 34px;
-  border-radius: 50%;
+  aspect-ratio: 1;
+  border-radius: 14px;
   border: 2.5px solid transparent;
   background: transparent;
-  padding: 4px;
+  padding: 0;
   cursor: pointer;
-  transition: border-color 0.15s, transform 0.12s, box-shadow 0.15s;
+  transition: border-color 0.15s, transform 0.13s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
 }
-.btp-dot:hover { transform: scale(1.15); }
+.btp-dot:hover { transform: scale(1.10); box-shadow: 0 4px 14px rgba(0,0,0,0.35); }
 .btp-dot.active {
-  border-color: rgba(240,200,80,0.85);
-  box-shadow: 0 0 0 3px rgba(240,200,80,0.22);
-  transform: scale(1.1);
+  border-color: rgba(240,200,80,0.90);
+  box-shadow: 0 0 0 3px rgba(240,200,80,0.30), 0 4px 14px rgba(0,0,0,0.30);
+  transform: scale(1.08);
 }
 .btp-dot-swatch {
   width: 100%; height: 100%;
-  border-radius: 50%;
+  border-radius: 11px;
   display: block;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.25);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.45), inset 0 -1px 3px rgba(255,255,255,0.10);
+  transition: filter 0.15s;
 }
+.btp-dot:hover .btp-dot-swatch { filter: brightness(1.12); }
 .btp-sw-default  { background: linear-gradient(145deg, #c8902a 0%, #7a4e1a 100%); }
-.btp-sw-teal     { background: linear-gradient(145deg, #0ea5a0 0%, #0f766e 100%); }
-.btp-sw-wood     { background: linear-gradient(145deg, #a0562d 0%, #60300e 100%); }
-.btp-sw-parchment{ background: linear-gradient(145deg, #d4a96a 0%, #a87840 100%); }
-.btp-sw-obsidian { background: linear-gradient(145deg, #3a3a54 0%, #12121e 100%); }
-.btp-sw-berber   { background: linear-gradient(145deg, #c44a10 0%, #7c2a04 100%); }
-.btp-sw-night    { background: linear-gradient(145deg, #2258a0 0%, #0c1f3c 100%); }
-.btp-sw-sand     { background: linear-gradient(145deg, #e8cc80 0%, #c09830 100%); }
-.btp-sw-jade     { background: linear-gradient(145deg, #2d7a52 0%, #144228 100%); }
-.btp-sw-crimson  { background: linear-gradient(145deg, #a02030 0%, #5a0d18 100%); }
-/* Thèmes clairs : anneau doré remplacé par anneau ambré */
+.btp-sw-teal     { background: linear-gradient(145deg, #1ab5b0 0%, #0d6e68 100%); }
+.btp-sw-wood     { background: linear-gradient(145deg, #a85c2e 0%, #5c2e0c 100%); }
+.btp-sw-parchment{ background: linear-gradient(145deg, #e4c47a 0%, #a87840 100%); }
+.btp-sw-obsidian { background: linear-gradient(145deg, #2e2e3e 0%, #0c0c14 100%); }
+.btp-sw-berber   { background: linear-gradient(145deg, #d05218 0%, #7a2a04 100%); }
+.btp-sw-night    { background: linear-gradient(145deg, #2a62b0 0%, #0a1c3a 100%); }
+.btp-sw-sand     { background: linear-gradient(145deg, #f0d888 0%, #b89030 100%); }
+.btp-sw-jade     { background: linear-gradient(145deg, #3a9060 0%, #123e24 100%); }
+.btp-sw-crimson  { background: linear-gradient(145deg, #b03040 0%, #560c18 100%); }
+/* Thèmes clairs : anneau ambré */
 [data-theme="kabylie"] .btp-dot.active,
 [data-theme="desert"]  .btp-dot.active,
 [data-theme="modern"]  .btp-dot.active {
-  border-color: rgba(146,64,14,0.75) !important;
-  box-shadow: 0 0 0 3px rgba(146,64,14,0.15) !important;
+  border-color: rgba(146,64,14,0.80) !important;
+  box-shadow: 0 0 0 3px rgba(146,64,14,0.18), 0 4px 14px rgba(0,0,0,0.18) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -12894,11 +12953,11 @@ Patrimoine Amazigh • Idles Amaziɣ
 <span class="stray-section-label"><span class="Appearance-label" data-i18n="Appearancelabel">Apparence</span></span>
 <div class="stray-grid">
 <button aria-label="Thème" class="toolbar-btn stray-item" id="theme-btn" title="Changer de thème">
-<span class="stray-icon">🎨</span>
+<span class="stray-icon">ⵣ ⚜ ⵣ</span>
 <span class="stray-item-label" data-i18n="btnTheme">Thème</span>
 </button>
 <button aria-label="Son" class="toolbar-btn stray-item" id="sound-btn" title="Son On/Off">
-<span class="stray-icon">🔊</span>
+<span class="stray-icon">🔊 📳</span>
 <span class="stray-item-label" data-i18n="btnSound">Son</span>
 </button>
 </div>
@@ -20264,6 +20323,24 @@ btn.appendChild(span);
 try {
 localStorage.setItem('tiddas_theme', String(themeIndex));
 } catch(e) {}
+// Appliquer le thème de plateau par défaut si l'utilisateur n'en a pas choisi un manuellement
+const THEME_DEFAULT_BTHEME = {
+  'kabylie':     'parchment',
+  'desert':      'sand',
+  'nuit':        'night',
+  'glass':       'obsidian',
+  'contrast':    'obsidian',
+  'modern':      'teal',
+  'modern-dark': 'night',
+};
+try {
+  const savedBtheme = localStorage.getItem('tiddas_board_theme_v1');
+  const isDefault = !savedBtheme || savedBtheme === 'default';
+  if (isDefault && typeof applyBoardThemeFinal === 'function') {
+    const suggestedBtheme = THEME_DEFAULT_BTHEME[theme] || 'default';
+    applyBoardThemeFinal(suggestedBtheme, false);
+  }
+} catch(_) {}
 // Rafraîchir le SVG et le plateau du morpion carré si actif
 if (typeof ntlataUpdateSvg === 'function') try { ntlataUpdateSvg(); } catch(_) {}
 if (typeof isNTlataVariant === 'function' && isNTlataVariant() && typeof renderBoard === 'function' && typeof state !== 'undefined' && state && !state.winner) {
@@ -23145,11 +23222,11 @@ if (onlineBtn) {
         if (!c) return;
         const name = (document.getElementById('online-your-name')?.value||'').trim() || 'Un joueur';
         const link = _challengeLink(c);
-        const text = `⚔️ ${name} icqarrew-ik ɣef Tiddas !\n${link}`;
+        const text = `⚔️ ${name} icqarrew-ik ɣef Tiddas !`;
         if (typeof navigator.share === 'function') {
-          try { await navigator.share({ title: 'Tiddas – Défi ⚔️', text }); return; } catch(_) {}
+          try { await navigator.share({ title: 'Tiddas – Défi ⚔️', text, url: link }); return; } catch(_) {}
         }
-        _copyToClipboard(text, shareBtn);
+        _copyToClipboard(`${text}\n${link}`, shareBtn);
       };
     }
 
