@@ -15690,7 +15690,7 @@ onlineShareBtn: "Partager",
 onlineChallengeShareText: "{name} te défie sur Tiddas ! Clique pour rejoindre la partie :",
 onlineChallengeWhatsApp: "Je te défie sur Tiddas ! Rejoins ma partie ici :",
 onlineChallengeAcceptedTitle: "Défi accepté !",
-onlineChallengeAcceptedSub: "icqarrew-ik — La partie commence !",
+onlineChallengeAcceptedSub: " Te défie — La partie commence !",
 onlineWaitsForYou: "t'attend — Entre ton nom",
 statsSectionGlobal: "Vue globale",
 statsSectionEfficiency: "Efficacité",
@@ -16101,21 +16101,21 @@ onlineChipVs: "mgal",
 onlineChipPending: "Yettṛaǧu",
 onlineCodePreview: "Tasarut-ik :",
 onlineCodeConfirm: "Asnulfu n teslaḍt ?",
-onlineLinkCopied: "Aseɣwen yettwanqal ✅",
-onlineCopyLinkAria: "Nqel aseɣwen",
-onlineShareLinkAria: "azen i weḥbib",
+onlineLinkCopied: "Iseɣwi yettwanqal ✅",
+onlineCopyLinkAria: "Nqel iseɣwi",
+onlineShareLinkAria: "azen i umeddakul",
 onlineShareText: "Qqim ɣer teslaḍt n Tiddas:",
 onlineChallengeBtn: "⚔️ Feggi-d asnekcam",
-onlineChallengeMsg: "Azen asnekcam-a i umeddakul:",
+onlineChallengeMsg: "Azen iseɣwi i umeddakul:",
 onlineCopied: "Yettwanqal ✅",
-onlineCopyCode: "Anqel",
-onlineCopyLink: "Anqel aseɣwen",
-onlineShareBtn: "Bder-t",
-onlineChallengeShareText: "{name} icqarrew-ik ɣef Tiddas! S'qqim ɣer wurar:",
+onlineCopyCode: "Nqel",
+onlineCopyLink: "Nqel iseɣwi",
+onlineShareBtn: "Zuzer-it",
+onlineChallengeShareText: "{name} icqarrew-ik ɣef Tiddas! qqim-d ɣer wurar:",
 onlineChallengeWhatsApp: "Icqarrew-ik ɣef Tiddas! Qqim ɣer teslaḍt-iw:",
-onlineChallengeAcceptedTitle: "Asnekcam yettwaqbel!",
-onlineChallengeAcceptedSub: "icqarrew-ik — Awrar yessekna!",
-onlineWaitsForYou: "yettreǧǧu-k — Sekcem isem-ik",
+onlineChallengeAcceptedTitle: " Yettwaqbal ucqirrew!",
+onlineChallengeAcceptedSub: "icqarrew-ik — yebda wurar!",
+onlineWaitsForYou: "yettraǧǧu-k — Sekcem isem-ik",
 statsSectionGlobal: "Agemmuḍ s umata",
 statsSectionActivity: "Tamyanți",
 statsPlacementsPerGame: "Asnulfu / timlilit",
@@ -16126,7 +16126,7 @@ statsActionsCount: "Ambiwel",
 statsPlacementsCount: "Asnulfu",
 statsMovesCount: "Anaqel",
 resetStatsConfirm: "Fren agemmuḍ?",
-toastStatsReset: "Agemmuḍ yettfren.",
+toastStatsReset: "Agemmuḍ yettwafren.",
 toastExported: "Alɣu yettwabna.",
 noStatsYet: "Ulac igemmaḍ tura. Urar timlilit !",
 statsSectionEfficiency: "Tawuri",
@@ -16557,7 +16557,7 @@ onlineShareBtn: "Share",
 onlineChallengeShareText: "{name} challenges you on Tiddas! Click to join:",
 onlineChallengeWhatsApp: "I challenge you on Tiddas! Join my game here:",
 onlineChallengeAcceptedTitle: "Challenge accepted!",
-onlineChallengeAcceptedSub: "icqarrew-ik — The game starts!",
+onlineChallengeAcceptedSub: "Challenges you — The game starts!",
 onlineWaitsForYou: "is waiting — Enter your name",
 statsSectionGlobal: "Overview",
 statsSectionEfficiency: "Efficiency",
@@ -22935,7 +22935,7 @@ function _showNameModal(challengerName, roomCode) {
 // Banner "X te défie !" côté challengé
 function _showChallengerIncomingBanner(challengerName, roomCode) {
   try {
-    const msg = `⚔️ ${challengerName} icqarrew-ik — Entre ton pseudo pour rejoindre`;
+    const msg = `⚔️ ${challengerName} te défie — Entre ton pseudo pour rejoindre`;
     if (typeof showToast === 'function') showToast(msg, 6000);
     try { if (navigator.vibrate) navigator.vibrate([100, 50, 100]); } catch(_) {}
   } catch(_) {}
@@ -23307,7 +23307,7 @@ if (onlineBtn) {
         if (!('Notification' in window)) return;
         const _send = () => {
           const n = new Notification('⚔️ Défi accepté !', {
-            body: `${playerName} icqarrew-ik — La partie commence !`,
+            body: `${playerName} te défie — La partie commence !`,
             icon: document.querySelector('link[rel="icon"]')?.href || '',
             tag: 'tiddas-challenge'
           });
