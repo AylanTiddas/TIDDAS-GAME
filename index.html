@@ -5787,223 +5787,459 @@ body.replay-active .replay-badge {
 
 
 /* ── Online Lobby — Minimal ─────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   ONLINE LOBBY — Redesign ergonomique v2
+   ═══════════════════════════════════════════════════════════ */
 .online-lobby {
   --ol-gold: #f0c850;
+  --ol-gold-dim: rgba(240,200,80,0.55);
+  --ol-green: #3ddc5a;
+  --ol-card-bg: rgba(255,255,255,0.055);
+  --ol-card-border: rgba(240,200,80,0.22);
   display: none !important;
 }
 .selection-area.active.online-lobby {
-  display: flex !important; flex-direction: column; gap: 10px;
-  padding: 20px 16px 24px; max-width: 400px; margin: 0 auto;
+  display: flex !important; flex-direction: column; gap: 12px;
+  padding: 18px 16px 28px; max-width: 420px; margin: 0 auto;
   width: 100%;
 }
+
+/* ── Header ── */
 .ol-title {
   font-family: var(--font-title, serif);
-  font-size: clamp(1rem, 4vw, 1.25rem);
-  color: var(--ol-gold); text-align: center; margin: 0 0 4px;
+  font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+  color: var(--ol-gold); text-align: center; margin: 0 0 0;
+  letter-spacing: 0.06em;
+}
+.ol-subtitle {
+  font-size: 0.75rem; color: rgba(245,245,245,0.38);
+  text-align: center; margin: -4px 0 0;
+  font-family: var(--font-ui, sans-serif); letter-spacing: 0.04em;
+}
+/* Wrapper pré-connexion — masqué dès qu'une connexion est établie */
+#ol-pre-connect {
+  display: flex; flex-direction: column; gap: 12px;
 }
 .ol-global-msg {
   font-size: 0.82rem; color: rgba(245,245,245,0.6);
   text-align: center; min-height: 1.2em; margin: 0;
   font-family: var(--font-ui, sans-serif);
 }
-/* Inputs */
+
+/* ── Name input with icon wrapper ── */
+.ol-field-wrap {
+  position: relative; width: 100%;
+}
+.ol-field-icon {
+  position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+  font-size: 1rem; pointer-events: none; opacity: 0.55;
+}
+.ol-field-wrap .ol-input { padding-left: 38px; }
+
+/* ── Inputs ── */
 .ol-input, .ol-code-input {
   width: 100%; box-sizing: border-box;
   background: rgba(255,255,255,0.06);
   border: 1.5px solid rgba(240,200,80,0.28);
-  border-radius: 12px; color: #f0f0f0;
-  font-size: 1rem; padding: 11px 14px; outline: none;
+  border-radius: 14px; color: #f0f0f0;
+  font-size: 1rem; padding: 12px 14px; outline: none;
   font-family: var(--font-ui, sans-serif);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .ol-input:focus, .ol-code-input:focus {
-  border-color: rgba(240,200,80,0.6);
-  box-shadow: 0 0 0 3px rgba(240,200,80,0.08);
+  border-color: rgba(240,200,80,0.65);
+  box-shadow: 0 0 0 3px rgba(240,200,80,0.1);
 }
-/* Divider */
+.ol-input::placeholder { color: rgba(245,245,245,0.3); }
+
+/* ── Variant selector ── */
+.ol-variant-label {
+  font-size: 0.68rem; color: rgba(245,245,245,0.35); text-transform: uppercase;
+  letter-spacing: 0.1em; font-family: var(--font-ui,sans-serif);
+  text-align: center;
+}
+.ol-variant-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 7px;
+}
+.ol-vbtn {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  padding: 10px 12px 9px; border-radius: 13px; cursor: pointer; text-align: left;
+  background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1);
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  font-family: var(--font-ui,sans-serif); position: relative; overflow: hidden;
+}
+.ol-vbtn::before {
+  content: ''; position: absolute; inset: 0; opacity: 0;
+  background: linear-gradient(135deg, rgba(240,200,80,0.1), transparent);
+  transition: opacity 0.2s;
+}
+.ol-vbtn:hover { border-color: rgba(240,200,80,0.35); }
+.ol-vbtn:hover::before { opacity: 1; }
+.ol-vbtn.selected {
+  background: rgba(240,200,80,0.11);
+  border-color: var(--ol-gold);
+  box-shadow: 0 0 0 2px rgba(240,200,80,0.15), inset 0 0 0 1px rgba(240,200,80,0.08);
+}
+.ol-vbtn-icon {
+  font-size: 1.25rem; line-height: 1; margin-bottom: 3px;
+  color: rgba(240,200,80,0.55); display: block;
+  transition: color 0.15s, transform 0.15s;
+  filter: drop-shadow(0 1px 3px rgba(240,200,80,0.25));
+}
+.ol-vbtn:hover .ol-vbtn-icon {
+  color: rgba(240,200,80,0.80);
+  transform: scale(1.15);
+}
+.ol-vbtn.selected .ol-vbtn-icon {
+  color: var(--ol-gold);
+  filter: drop-shadow(0 0 6px rgba(240,200,80,0.55));
+  transform: scale(1.1);
+}
+.ol-vbtn-name {
+  font-size: 0.8rem; font-weight: 700; color: rgba(245,245,245,0.85);
+  line-height: 1.2;
+}
+.ol-vbtn.selected .ol-vbtn-name { color: var(--ol-gold); }
+.ol-vbtn-desc {
+  font-size: 0.66rem; color: rgba(245,245,245,0.35); line-height: 1.2;
+}
+.ol-variant-guest-note {
+  font-size: 0.71rem; text-align: center; color: rgba(245,245,245,0.38);
+  font-family: var(--font-ui,sans-serif); display: none;
+  font-style: italic;
+}
+
+/* ── Divider ── */
 .ol-divider-or {
   text-align: center; color: rgba(255,255,255,0.3);
-  font-size: 0.78rem; font-family: var(--font-ui, sans-serif);
-  position: relative;
+  font-size: 0.75rem; font-family: var(--font-ui, sans-serif);
+  position: relative; margin: -2px 0;
 }
 .ol-divider-or::before, .ol-divider-or::after {
-  content: ''; position: absolute; top: 50%; width: 38%; height: 1px;
+  content: ''; position: absolute; top: 50%; width: 40%; height: 1px;
   background: rgba(255,255,255,0.1);
 }
 .ol-divider-or::before { left: 0; }
 .ol-divider-or::after  { right: 0; }
-/* Create button */
+
+/* ── Create button ── */
 .ol-big-btn {
-  width: 100%; padding: 13px 16px; border-radius: 14px;
-  background: linear-gradient(135deg, rgba(240,200,80,0.18), rgba(240,200,80,0.08));
-  border: 1.5px solid rgba(240,200,80,0.38); color: var(--ol-gold);
-  font-family: var(--font-title, serif); font-size: 1rem; font-weight: 700;
-  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  width: 100%; padding: 0; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(240,200,80,0.16), rgba(240,200,80,0.07));
+  border: 1.5px solid rgba(240,200,80,0.42); color: var(--ol-gold);
+  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+  display: flex; align-items: center; gap: 0; overflow: hidden;
 }
-.ol-big-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(240,200,80,0.15); }
+.ol-big-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 18px rgba(240,200,80,0.18);
+  background: linear-gradient(135deg, rgba(240,200,80,0.22), rgba(240,200,80,0.1));
+}
 .ol-big-btn:active { transform: translateY(0); }
-/* Join row */
-.ol-join-row { display: flex; gap: 8px; }
-.ol-join-row .ol-code-input { flex: 1; text-align: center; font-weight: 700; letter-spacing: 0.12em; font-size: 1.1rem; }
+.ol-btn-icon-box {
+  width: 52px; min-width: 52px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; align-self: stretch;
+  background: rgba(240,200,80,0.1); border-right: 1px solid rgba(240,200,80,0.2);
+}
+.ol-btn-text-box {
+  flex: 1; padding: 12px 14px; text-align: left;
+}
+.ol-btn-main {
+  display: block; font-family: var(--font-title, serif);
+  font-size: 0.95rem; font-weight: 700; letter-spacing: 0.03em;
+  color: var(--ol-gold); line-height: 1.2;
+}
+.ol-btn-sub {
+  display: block; font-family: var(--font-ui, sans-serif);
+  font-size: 0.7rem; color: rgba(240,200,80,0.55); margin-top: 2px;
+}
+.ol-btn-arrow {
+  padding-right: 14px; font-size: 1rem; color: var(--ol-gold-dim);
+}
+
+/* ── Join card ── */
+.ol-join-card {
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(240,200,80,0.22);
+  border-radius: 18px; padding: 14px 14px 10px;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ol-join-card:focus-within {
+  border-color: rgba(240,200,80,0.55);
+  box-shadow: 0 0 0 3px rgba(240,200,80,0.08);
+}
+.ol-join-header {
+  display: flex; align-items: center; gap: 8px;
+}
+.ol-join-icon { font-size: 1rem; line-height: 1; }
+.ol-join-title {
+  font-family: var(--font-title, serif); font-size: 0.85rem;
+  font-weight: 700; color: var(--ol-gold); letter-spacing: 0.03em;
+}
+.ol-join-row { display: flex; gap: 8px; align-items: stretch; }
+.ol-join-row .ol-code-input {
+  flex: 1; text-align: center; font-weight: 800;
+  letter-spacing: 0.28em; font-size: 1.35rem; padding: 13px 10px;
+  border-radius: 13px; background: rgba(0,0,0,0.18);
+  border-color: rgba(240,200,80,0.35);
+}
+.ol-join-row .ol-code-input::placeholder {
+  color: rgba(240,200,80,0.2); letter-spacing: 0.25em; font-size: 1.1rem;
+}
+.ol-join-row .ol-code-input:focus {
+  border-color: var(--ol-gold); background: rgba(0,0,0,0.25);
+  box-shadow: 0 0 0 3px rgba(240,200,80,0.1);
+}
 .ol-connect-btn {
-  flex-shrink: 0; width: 46px; height: 46px; border-radius: 12px;
-  background: rgba(240,200,80,0.15); border: 1.5px solid rgba(240,200,80,0.35);
-  color: var(--ol-gold); font-size: 1.2rem; cursor: pointer;
-  transition: background 0.15s, transform 0.15s;
+  flex-shrink: 0; width: 52px; min-width: 52px; border-radius: 13px;
+  background: linear-gradient(135deg, rgba(240,200,80,0.2), rgba(240,200,80,0.08));
+  border: 1.5px solid rgba(240,200,80,0.42);
+  color: var(--ol-gold); cursor: pointer;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
   display: flex; align-items: center; justify-content: center;
 }
-.ol-connect-btn:hover { background: rgba(240,200,80,0.28); transform: translateY(-1px); }
-.ol-connect-btn:disabled { opacity: 0.35; cursor: default; transform: none; }
-/* Connected panel */
-#online-status { display: flex; flex-direction: column; gap: 8px; }
+.ol-connect-btn:hover {
+  background: rgba(240,200,80,0.3); transform: translateX(2px);
+  box-shadow: 0 3px 12px rgba(240,200,80,0.25);
+}
+.ol-connect-btn:disabled { opacity: 0.28; cursor: default; transform: none; box-shadow: none; }
+.ol-connect-btn:not(:disabled):active { transform: translateX(4px); }
+.ol-join-hint {
+  font-size: 0.68rem; color: rgba(245,245,245,0.28);
+  text-align: center; font-family: var(--font-ui,sans-serif);
+  margin: -2px 0 0; letter-spacing: 0.01em;
+}
+
+/* ── Quit/modify connected room ── */
+.ol-quit-btn {
+  align-self: flex-start;
+  background: transparent; border: none;
+  color: rgba(245,245,245,0.35); font-size: 0.78rem;
+  cursor: pointer; padding: 2px 4px;
+  font-family: var(--font-ui, sans-serif);
+  transition: color 0.2s; letter-spacing: 0.01em;
+}
+.ol-quit-btn:hover { color: rgba(245,245,245,0.72); }
+
+/* ── Connected panel (card) ── */
+#online-status {
+  display: flex; flex-direction: column; gap: 10px;
+  background: var(--ol-card-bg);
+  border: 1px solid var(--ol-card-border);
+  border-radius: 18px; padding: 14px 14px 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Status line */
 .ol-status-line {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 0.85rem; color: rgba(245,245,245,0.7);
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.8rem; color: rgba(245,245,245,0.6);
   font-family: var(--font-ui, sans-serif);
 }
 .ol-dot {
   width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-  background: rgba(255,255,255,0.25);
-  transition: background 0.3s;
+  background: rgba(255,255,255,0.2); transition: background 0.3s, box-shadow 0.3s;
 }
-.ol-dot.connected { background: #3ddc5a; box-shadow: 0 0 6px #3ddc5a; }
+.ol-dot.connected {
+  background: var(--ol-green);
+  box-shadow: 0 0 0 3px rgba(61,220,90,0.2), 0 0 8px rgba(61,220,90,0.5);
+  animation: ol-pulse 2s ease-in-out infinite;
+}
+@keyframes ol-pulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(61,220,90,0.2), 0 0 8px rgba(61,220,90,0.5); }
+  50%      { box-shadow: 0 0 0 5px rgba(61,220,90,0.1), 0 0 14px rgba(61,220,90,0.35); }
+}
+
 /* Matchup */
 .ol-matchup {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  font-family: var(--font-title, serif); font-size: 1rem; font-weight: 700;
-  color: #f0f0f0; padding: 8px 12px;
-  background: rgba(255,255,255,0.04); border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 12px; border-radius: 13px;
+  background: rgba(0,0,0,0.22); border: 1px solid rgba(255,255,255,0.08);
 }
-.ol-vs { color: rgba(240,200,80,0.6); font-size: 0.78rem; font-weight: 900; }
-/* Code row */
-.ol-code-row {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 10px;
-  background: rgba(255,255,255,0.04); border-radius: 10px;
+.ol-player-chip {
+  display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1;
 }
-.ol-code-label { font-size: 0.75rem; color: rgba(245,245,245,0.4); font-family: var(--font-ui,sans-serif); }
+.ol-player-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(240,200,80,0.25), rgba(240,200,80,0.1));
+  border: 1.5px solid rgba(240,200,80,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: 800; color: var(--ol-gold);
+  font-family: var(--font-title, serif);
+}
+.ol-player-name {
+  font-family: var(--font-title, serif); font-size: 0.78rem; font-weight: 700;
+  color: #f0f0f0; max-width: 90px; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; text-align: center;
+}
+.ol-vs-badge {
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(240,200,80,0.1); border: 1px solid rgba(240,200,80,0.3);
+  color: var(--ol-gold); font-size: 0.62rem; font-weight: 900;
+  font-family: var(--font-ui,sans-serif); flex-shrink: 0;
+}
+
+/* Code display */
+#online-roomcode-row { display: flex; flex-direction: column; gap: 8px; }
+.ol-code-card {
+  background: linear-gradient(135deg, rgba(240,200,80,0.08), rgba(0,0,0,0.22));
+  border: 1.5px solid rgba(240,200,80,0.35);
+  border-radius: 16px; padding: 12px 14px;
+  display: flex; align-items: center; gap: 10px;
+  position: relative; overflow: hidden;
+}
+.ol-code-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(240,200,80,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.ol-code-info { flex: 1; }
+.ol-code-label {
+  font-size: 0.64rem; color: rgba(240,200,80,0.55);
+  font-family: var(--font-ui,sans-serif); text-transform: uppercase;
+  letter-spacing: 0.1em; display: flex; align-items: center; gap: 5px;
+  margin-bottom: 3px;
+}
+.ol-code-label-dot { font-size: 0.5rem; color: var(--ol-green); }
 .ol-code-val {
-  flex: 1; font-family: var(--font-title, serif); font-size: 1.3rem;
-  font-weight: 900; letter-spacing: 0.18em; color: var(--ol-gold);
+  font-family: var(--font-title, serif); font-size: 2rem;
+  font-weight: 900; letter-spacing: 0.26em; color: var(--ol-gold);
+  line-height: 1; display: block;
+  text-shadow: 0 2px 12px rgba(240,200,80,0.35);
 }
 .ol-copy-btn {
-  background: rgba(240,200,80,0.1); border: 1px solid rgba(240,200,80,0.25);
-  border-radius: 8px; color: var(--ol-gold); width: 32px; height: 32px;
+  background: rgba(240,200,80,0.15); border: 1.5px solid rgba(240,200,80,0.35);
+  border-radius: 12px; color: var(--ol-gold); width: 42px; height: 42px;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: background 0.15s;
-  flex-shrink: 0;
+  cursor: pointer; transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  flex-shrink: 0; position: relative; z-index: 1;
 }
-.ol-copy-btn:hover { background: rgba(240,200,80,0.22); }
-.ol-copy-btn svg { width: 15px; height: 15px; }
+.ol-copy-btn:hover {
+  background: rgba(240,200,80,0.28); transform: scale(1.08);
+  box-shadow: 0 3px 10px rgba(240,200,80,0.2);
+}
+.ol-copy-btn:active { transform: scale(0.95); }
+.ol-copy-btn svg { width: 18px; height: 18px; }
+
 /* Invite button */
 .ol-invite-btn {
-  width: 100%; padding: 12px; border-radius: 14px;
-  background: linear-gradient(135deg, #e8b830, #c89010);
+  width: 100%; padding: 13px 16px; border-radius: 15px;
+  background: linear-gradient(135deg, #d4a018, #b8860a);
   color: #1a0f00; font-family: var(--font-title, serif);
   font-size: 1rem; font-weight: 800; border: none; cursor: pointer;
-  box-shadow: 0 4px 16px rgba(200,144,16,0.35);
+  box-shadow: 0 4px 18px rgba(200,144,16,0.4);
   transition: transform 0.15s, box-shadow 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  letter-spacing: 0.03em;
 }
-.ol-invite-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(200,144,16,0.5); }
+.ol-invite-icon { font-size: 1.1rem; }
+.ol-invite-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 22px rgba(200,144,16,0.55);
+}
 .ol-invite-btn:active { transform: translateY(0); }
+
 /* Rematch */
-.ol-rematch-row { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
+.ol-rematch-row {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-size: 0.82rem; padding: 4px 0;
+}
 .ol-rematch-chip {
-  padding: 4px 12px; border-radius: 20px;
-  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
-  font-weight: 700; color: rgba(245,245,245,0.5); font-family: var(--font-ui,sans-serif);
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 20px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
+  font-weight: 700; color: rgba(245,245,245,0.45);
+  font-family: var(--font-ui,sans-serif); font-size: 0.82rem;
   transition: all 0.25s;
 }
-.ol-rematch-chip.ready { background: rgba(61,220,90,0.15); border-color: rgba(61,220,90,0.45); color: #3ddc5a; }
+.ol-rematch-chip::before {
+  content: '○'; font-size: 0.7rem; opacity: 0.5;
+  transition: all 0.25s;
+}
+.ol-rematch-chip.ready {
+  background: rgba(61,220,90,0.14); border-color: rgba(61,220,90,0.5);
+  color: var(--ol-green);
+}
+.ol-rematch-chip.ready::before { content: '✓'; opacity: 1; }
+.ol-rematch-sep { color: rgba(255,255,255,0.2); font-size: 1.2rem; }
 .ol-rematch-btn {
-  width: 100%; padding: 11px; border-radius: 12px;
+  width: 100%; padding: 12px; border-radius: 13px;
   background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.18);
   color: #f0f0f0; font-family: var(--font-title,serif); font-size: 0.95rem;
-  font-weight: 700; cursor: pointer; transition: background 0.15s;
+  font-weight: 700; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+  letter-spacing: 0.02em;
 }
-.ol-rematch-btn:hover { background: rgba(255,255,255,0.13); }
+.ol-rematch-btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.3); }
+
 /* Auto-start banner */
 #online-autostart-banner {
-  display: none; align-items: center; justify-content: center; gap: 8px;
-  padding: 10px 14px; border-radius: 12px;
+  display: none; align-items: center; justify-content: center; gap: 10px;
+  padding: 10px 14px; border-radius: 13px;
   background: rgba(61,220,90,0.1); border: 1px solid rgba(61,220,90,0.35);
-  color: #3ddc5a; font-family: var(--font-title,serif); font-size: 0.9rem; font-weight: 700;
+  color: var(--ol-green); font-family: var(--font-title,serif);
+  font-size: 0.88rem; font-weight: 700;
 }
 #online-autostart-banner.visible { display: flex; }
-.autostart-count { font-size: 1.4rem; font-weight: 900; min-width: 22px; text-align: center; }
+.autostart-count {
+  font-size: 1.6rem; font-weight: 900; min-width: 28px; text-align: center;
+  line-height: 1; color: var(--ol-green);
+  text-shadow: 0 0 12px rgba(61,220,90,0.6);
+}
 #autostart-cancel-btn {
   background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 6px; color: rgba(255,255,255,0.5); font-size: 0.8rem;
-  padding: 2px 7px; cursor: pointer; margin-left: 4px;
-}
-/* Start button */
-.ol-start-btn {
-  width: 100%; padding: 13px; border-radius: 14px;
-  background: linear-gradient(135deg, rgba(61,220,90,0.2), rgba(0,180,60,0.12));
-  border: 1.5px solid rgba(61,220,90,0.45); color: #3ddc5a;
-  font-family: var(--font-title,serif); font-size: 1rem; font-weight: 800;
-  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-}
-.ol-start-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(61,220,90,0.25); }
-.ol-start-btn:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
-/* Recent rooms */
-.online-recent-list { display: flex; flex-direction: column; gap: 4px; }
-.online-room-chip {
-  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 10px; cursor: pointer; width: 100%; text-align: left;
+  border-radius: 8px; color: rgba(255,255,255,0.45); font-size: 0.75rem;
+  padding: 3px 8px; cursor: pointer; margin-left: 4px;
   transition: background 0.15s;
 }
-.online-room-chip:hover { background: rgba(255,255,255,0.08); }
-.chip-code { font-weight: 900; letter-spacing: 0.15em; color: var(--ol-gold); font-size: 0.9rem; }
-.chip-vs   { flex: 1; font-size: 0.8rem; color: rgba(245,245,245,0.5); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.chip-result { font-size: 0.9rem; }
-.chip-date { font-size: 0.7rem; opacity: 0.4; font-weight: 700; }
+#autostart-cancel-btn:hover { background: rgba(255,255,255,0.14); }
+
+/* Start button */
+.ol-start-btn {
+  width: 100%; padding: 14px; border-radius: 15px;
+  background: linear-gradient(135deg, rgba(61,220,90,0.22), rgba(0,160,55,0.14));
+  border: 1.5px solid rgba(61,220,90,0.5); color: var(--ol-green);
+  font-family: var(--font-title,serif); font-size: 1.05rem; font-weight: 800;
+  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  letter-spacing: 0.04em; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.ol-start-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(61,220,90,0.3); }
+.ol-start-btn:active { transform: translateY(0); }
+.ol-start-btn:disabled { opacity: 0.35; cursor: default; transform: none; box-shadow: none; }
+
+/* Recent rooms */
+.online-recent-list { display: flex; flex-direction: column; gap: 5px; }
+.online-room-chip {
+  display: flex; align-items: center; gap: 10px; padding: 9px 13px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 12px; cursor: pointer; width: 100%; text-align: left;
+  transition: background 0.15s, border-color 0.15s;
+}
+.online-room-chip:hover {
+  background: rgba(255,255,255,0.08); border-color: rgba(240,200,80,0.2);
+}
+.chip-code {
+  font-weight: 900; letter-spacing: 0.15em; color: var(--ol-gold);
+  font-size: 0.88rem; font-family: var(--font-title,serif);
+  min-width: 40px;
+}
+.chip-vs { flex: 1; font-size: 0.78rem; color: rgba(245,245,245,0.48); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chip-result { font-size: 0.88rem; }
+.chip-date { font-size: 0.68rem; opacity: 0.38; font-weight: 700; font-family: var(--font-ui,sans-serif); }
+
 /* Back button */
 #back-to-modes-from-online-btn {
   align-self: center; margin-top: 4px;
   background: transparent; border: none;
-  color: rgba(245,245,245,0.45); font-size: 0.82rem;
-  cursor: pointer; padding: 6px; font-family: var(--font-ui,sans-serif);
+  color: rgba(245,245,245,0.4); font-size: 0.82rem;
+  cursor: pointer; padding: 8px 16px; font-family: var(--font-ui,sans-serif);
+  border-radius: 20px; transition: color 0.2s, background 0.2s;
+  letter-spacing: 0.03em;
 }
-#back-to-modes-from-online-btn:hover { color: rgba(245,245,245,0.8); }
-
-/* ── Variant picker (online lobby) ────────────────────────── */
-.ol-variant-label {
-  font-size: 0.72rem; color: rgba(245,245,245,0.38); text-transform: uppercase;
-  letter-spacing: 0.09em; font-family: var(--font-ui,sans-serif);
-  text-align: center; margin-bottom: -2px;
-}
-.ol-variant-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
-}
-.ol-vbtn {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 1px;
-  padding: 9px 12px; border-radius: 12px; cursor: pointer; text-align: left;
-  background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1);
-  transition: border-color 0.15s, background 0.15s;
-  font-family: var(--font-ui,sans-serif);
-}
-.ol-vbtn:hover { background: rgba(240,200,80,0.08); border-color: rgba(240,200,80,0.3); }
-.ol-vbtn.selected {
-  background: rgba(240,200,80,0.13);
-  border-color: rgba(240,200,80,0.7);
-  box-shadow: 0 0 0 2px rgba(240,200,80,0.12);
-}
-.ol-vbtn-name {
-  font-size: 0.83rem; font-weight: 700; color: rgba(245,245,245,0.88);
-  line-height: 1.2;
-}
-.ol-vbtn.selected .ol-vbtn-name { color: var(--ol-gold, #f0c850); }
-.ol-vbtn-desc {
-  min-height: 1.1em;
-  font-size: 0.68rem; color: rgba(245,245,245,0.38); line-height: 1.2;
-}
-/* Host-only note for variant (hidden for guest) */
-.ol-variant-guest-note {
-  font-size: 0.72rem; text-align: center; color: rgba(245,245,245,0.4);
-  font-family: var(--font-ui,sans-serif); display: none;
+#back-to-modes-from-online-btn:hover {
+  color: rgba(245,245,245,0.78);
+  background: rgba(255,255,255,0.06);
 }
 
 /* ── In-game online status bar ────────────────────────────── */
@@ -12203,6 +12439,24 @@ html[data-theme="desert"] body .ol-vbtn.selected {
   border-color: rgba(200,132,26,0.70) !important;
   box-shadow: 0 0 0 2px rgba(200,132,26,0.12) !important;
 }
+[data-theme="kabylie"] .ol-vbtn-icon,
+html[data-theme="kabylie"] body .ol-vbtn-icon,
+[data-theme="desert"] .ol-vbtn-icon,
+html[data-theme="desert"] body .ol-vbtn-icon {
+  color: rgba(150,80,10,0.55) !important;
+  filter: drop-shadow(0 1px 2px rgba(150,80,10,0.2)) !important;
+}
+[data-theme="kabylie"] .ol-vbtn:hover .ol-vbtn-icon,
+html[data-theme="kabylie"] body .ol-vbtn:hover .ol-vbtn-icon,
+[data-theme="desert"] .ol-vbtn:hover .ol-vbtn-icon,
+html[data-theme="desert"] body .ol-vbtn:hover .ol-vbtn-icon { color: rgba(150,80,10,0.85) !important; }
+[data-theme="kabylie"] .ol-vbtn.selected .ol-vbtn-icon,
+html[data-theme="kabylie"] body .ol-vbtn.selected .ol-vbtn-icon,
+[data-theme="desert"] .ol-vbtn.selected .ol-vbtn-icon,
+html[data-theme="desert"] body .ol-vbtn.selected .ol-vbtn-icon {
+  color: #92400e !important;
+  filter: drop-shadow(0 0 5px rgba(150,80,10,0.4)) !important;
+}
 [data-theme="kabylie"] .ol-vbtn-name,
 html[data-theme="kabylie"] body .ol-vbtn-name,
 [data-theme="desert"] .ol-vbtn-name,
@@ -12266,10 +12520,95 @@ html[data-theme="desert"] body .ol-code-input {
 }
 [data-theme="kabylie"] .ol-vs,
 [data-theme="desert"]  .ol-vs { color: rgba(150,80,10,0.65) !important; }
+/* Nouveaux éléments v2 — thèmes clairs */
+[data-theme="kabylie"] .ol-vs-badge,
+[data-theme="desert"]  .ol-vs-badge {
+  background: rgba(150,80,10,0.1) !important;
+  border-color: rgba(150,80,10,0.3) !important;
+  color: #7c4a0a !important;
+}
+[data-theme="kabylie"] .ol-player-avatar,
+[data-theme="desert"]  .ol-player-avatar {
+  background: linear-gradient(135deg, rgba(150,80,10,0.15), rgba(150,80,10,0.05)) !important;
+  border-color: rgba(150,80,10,0.4) !important;
+  color: #7c4a0a !important;
+}
+[data-theme="kabylie"] .ol-player-name,
+[data-theme="desert"]  .ol-player-name { color: #1c1409 !important; }
+[data-theme="kabylie"] .ol-code-card,
+[data-theme="desert"]  .ol-code-card {
+  background: rgba(31,26,18,0.04) !important;
+  border-color: rgba(150,80,10,0.2) !important;
+}
 [data-theme="kabylie"] .ol-code-row,
 [data-theme="desert"]  .ol-code-row { background: rgba(31,26,18,0.04) !important; }
 [data-theme="kabylie"] .ol-code-label,
 [data-theme="desert"]  .ol-code-label { color: rgba(31,26,18,0.45) !important; }
+[data-theme="kabylie"] .ol-subtitle,
+[data-theme="desert"]  .ol-subtitle { color: rgba(31,26,18,0.42) !important; }
+[data-theme="kabylie"] #online-status,
+[data-theme="desert"]  #online-status {
+  background: rgba(31,26,18,0.04) !important;
+  border-color: rgba(150,80,10,0.18) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
+}
+[data-theme="kabylie"] .ol-btn-main,
+[data-theme="desert"]  .ol-btn-main { color: #7c4a0a !important; }
+[data-theme="kabylie"] .ol-btn-sub,
+[data-theme="desert"]  .ol-btn-sub { color: rgba(150,80,10,0.55) !important; }
+[data-theme="kabylie"] .ol-btn-icon-box,
+[data-theme="desert"]  .ol-btn-icon-box {
+  background: rgba(150,80,10,0.08) !important;
+  border-color: rgba(150,80,10,0.18) !important;
+}
+[data-theme="kabylie"] .ol-big-btn,
+[data-theme="desert"]  .ol-big-btn {
+  background: linear-gradient(135deg, rgba(150,80,10,0.1), rgba(150,80,10,0.04)) !important;
+  border-color: rgba(150,80,10,0.38) !important;
+}
+[data-theme="kabylie"] .ol-connect-btn,
+[data-theme="desert"]  .ol-connect-btn {
+  background: rgba(150,80,10,0.1) !important;
+  border-color: rgba(150,80,10,0.35) !important;
+  color: #7c4a0a !important;
+}
+[data-theme="kabylie"] .ol-join-card,
+[data-theme="desert"]  .ol-join-card {
+  background: rgba(255,255,255,0.65) !important;
+  border-color: rgba(150,80,10,0.25) !important;
+}
+[data-theme="kabylie"] .ol-join-card:focus-within,
+[data-theme="desert"]  .ol-join-card:focus-within {
+  border-color: rgba(150,80,10,0.55) !important;
+  box-shadow: 0 0 0 3px rgba(150,80,10,0.08) !important;
+}
+[data-theme="kabylie"] .ol-join-title,
+[data-theme="desert"]  .ol-join-title { color: #7c4a0a !important; }
+[data-theme="kabylie"] .ol-join-hint,
+[data-theme="desert"]  .ol-join-hint { color: rgba(31,26,18,0.38) !important; }
+[data-theme="kabylie"] .ol-join-row .ol-code-input,
+[data-theme="desert"]  .ol-join-row .ol-code-input {
+  background: rgba(255,255,255,0.9) !important;
+  border-color: rgba(150,80,10,0.3) !important;
+  color: #2c1810 !important;
+}
+[data-theme="kabylie"] .ol-join-row .ol-code-input::placeholder,
+[data-theme="desert"]  .ol-join-row .ol-code-input::placeholder {
+  color: rgba(150,80,10,0.2) !important;
+}
+[data-theme="kabylie"] .ol-code-card,
+[data-theme="desert"]  .ol-code-card {
+  background: linear-gradient(135deg, rgba(150,80,10,0.08), rgba(255,255,255,0.5)) !important;
+  border-color: rgba(150,80,10,0.32) !important;
+}
+[data-theme="kabylie"] .ol-code-label,
+[data-theme="desert"]  .ol-code-label { color: rgba(150,80,10,0.55) !important; }
+[data-theme="kabylie"] .ol-code-val,
+[data-theme="desert"]  .ol-code-val { color: #7c4a0a !important; text-shadow: 0 2px 8px rgba(150,80,10,0.2) !important; }
+[data-theme="kabylie"] .ol-copy-btn,
+[data-theme="desert"]  .ol-copy-btn {
+  background: rgba(150,80,10,0.1) !important; border-color: rgba(150,80,10,0.3) !important; color: #7c4a0a !important;
+}
 
 /* ── Rematch ──────────────────────────────────────────────────────*/
 [data-theme="kabylie"] .ol-rematch-chip,
@@ -12299,6 +12638,10 @@ html[data-theme="desert"] body .ol-code-input {
 [data-theme="desert"]  .chip-vs { color: rgba(31,26,18,0.50) !important; }
 [data-theme="kabylie"] .chip-date,
 [data-theme="desert"]  .chip-date { color: rgba(31,26,18,0.35) !important; }
+[data-theme="kabylie"] .ol-quit-btn,
+[data-theme="desert"]  .ol-quit-btn { color: rgba(31,26,18,0.4) !important; }
+[data-theme="kabylie"] .ol-quit-btn:hover,
+[data-theme="desert"]  .ol-quit-btn:hover { color: rgba(31,26,18,0.75) !important; }
 [data-theme="kabylie"] .chip-code,
 [data-theme="desert"]  .chip-code { color: #92400e !important; }
 
@@ -14009,77 +14352,124 @@ Patrimoine Amazigh • Idles Amaziɣ
 <div class="selection-area online-lobby" id="online-lobby-area">
 
   <h2 class="ol-title" data-i18n="onlineTitle">⚔️ Multijoueur en ligne</h2>
-  <p id="online-status-global" class="ol-global-msg" aria-live="polite"></p>
+  <p class="ol-subtitle" data-i18n="onlineSubtitle">Jouez en temps réel avec vos amis</p>
+  <p id="online-status-global" class="ol-global-msg" aria-live="polite" style="display:none;"></p>
 
-  <!-- Pseudo -->
-  <input class="ol-input" id="online-your-name" maxlength="24"
-         autocomplete="nickname" inputmode="text"
-         data-i18n-placeholder="onlineNamePlaceholder" placeholder="Ton pseudo…" />
+  <!-- Pseudo avec icône -->
+  <div class="ol-field-wrap">
+    <span class="ol-field-icon" aria-hidden="true">👤</span>
+    <input class="ol-input" id="online-your-name" maxlength="24"
+           autocomplete="nickname" inputmode="text"
+           data-i18n-placeholder="onlineNamePlaceholder" placeholder="Ton pseudo…" />
+  </div>
 
   <!-- Sélecteur de variante (hôte uniquement) -->
   <p class="ol-variant-label" id="ol-variant-label" data-i18n="onlineVariantLabel">Choisir le jeu</p>
   <div class="ol-variant-grid" id="ol-variant-grid">
     <button class="ol-vbtn selected" type="button" data-variant="TIDDEST-no-diag">
+      <span class="ol-vbtn-icon" aria-hidden="true">ⵣ</span>
       <span class="ol-vbtn-name" data-i18n="TIDDESTTitle">Tiddest</span>
       <span class="ol-vbtn-desc" data-i18n-variant-desc="tiddest">5×5 · moulins</span>
     </button>
     <button class="ol-vbtn" type="button" data-variant="bessif-TIDDEST">
+      <span class="ol-vbtn-icon" aria-hidden="true">✦</span>
       <span class="ol-vbtn-name" data-i18n="bessifShortTitle">Tiddest n tlata</span>
       <span class="ol-vbtn-desc" data-i18n-variant-desc="ntlata">3 pions · tic-tac-toe</span>
     </button>
     <button class="ol-vbtn" type="button" data-variant="Kabylian-draughts">
+      <span class="ol-vbtn-icon" aria-hidden="true">♔</span>
       <span class="ol-vbtn-name" data-i18n="dammaShortTitle">Damma Kabyle</span>
       <span class="ol-vbtn-desc" data-i18n-variant-desc="damma">Dames traditionnelles</span>
     </button>
     <button class="ol-vbtn" type="button" data-variant="Kabylian-draughts-bessif">
+      <span class="ol-vbtn-icon" aria-hidden="true">♚</span>
       <span class="ol-vbtn-name" data-i18n="dammaBessifShortTitle">Damma Misère</span>
       <span class="ol-vbtn-desc" data-i18n-variant-desc="dammaBessif">Dames inversées</span>
     </button>
   </div>
   <p class="ol-variant-guest-note" id="ol-variant-guest-note" data-i18n="onlineVariantGuestNote">La variante est choisie par l'hôte</p>
 
-  <!-- Actions principales -->
-  <button class="ol-big-btn ol-btn-create" id="online-create-room" type="button">
-    + <span data-i18n="onlineCreate">Créer une partie</span>
-  </button>
+  <!-- Actions principales — masquées après connexion -->
+  <div id="ol-pre-connect">
+    <button class="ol-big-btn ol-btn-create" id="online-create-room" type="button">
+      <span class="ol-btn-icon-box" aria-hidden="true">🏠</span>
+      <span class="ol-btn-text-box">
+        <span class="ol-btn-main" data-i18n="onlineCreate">Créer un salon</span>
+        <span class="ol-btn-sub" data-i18n="onlineCreateSub">Invitez un ami avec un code</span>
+      </span>
+      <span class="ol-btn-arrow" aria-hidden="true">›</span>
+    </button>
 
-  <div class="ol-divider-or" aria-hidden="true"><span data-i18n="onlineOr">ou</span></div>
+    <div class="ol-divider-or" aria-hidden="true"><span data-i18n="onlineOr">ou</span></div>
 
-  <div class="ol-join-row">
-    <input class="ol-code-input" id="online-room-code"
-           inputmode="latin" autocomplete="off" spellcheck="false"
-           maxlength="6" data-i18n-placeholder="onlineJoinCodePlaceholder" placeholder="Code ami"
-           style="text-transform:uppercase" aria-label="Code du salon" />
-    <button class="ol-connect-btn" id="online-connect" type="button" disabled>→</button>
+    <!-- Rejoindre un salon — card -->
+    <div class="ol-join-card">
+      <div class="ol-join-header">
+        <span class="ol-join-icon" aria-hidden="true">🔗</span>
+        <span class="ol-join-title" data-i18n="onlineJoinTitle">Rejoindre un salon</span>
+      </div>
+      <div class="ol-join-row">
+        <input class="ol-code-input" id="online-room-code"
+               inputmode="latin" autocomplete="off" spellcheck="false"
+               maxlength="6" data-i18n-placeholder="onlineJoinCodePlaceholder"
+               placeholder="X X X X X X"
+               style="text-transform:uppercase" aria-label="Code du salon" />
+        <button class="ol-connect-btn" id="online-connect" type="button" disabled aria-label="Rejoindre">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <path d="M4 10h12M11 5l5 5-5 5"/>
+          </svg>
+        </button>
+      </div>
+      <p class="ol-join-hint" data-i18n="onlineJoinHint">Entrez le code de 6 caractères partagé par votre ami</p>
+    </div>
   </div>
 
   <!-- Panel connecté -->
   <div id="online-status" style="display:none;">
 
+    <!-- Bouton quitter/modifier le salon -->
+    <button class="ol-quit-btn" id="ol-quit-btn" type="button" onclick="if(typeof onlineDisconnect==='function'){onlineDisconnect();}">
+      ‹ <span data-i18n="onlineQuit">Quitter le salon</span>
+    </button>
+
+    <!-- Ligne de statut -->
     <div class="ol-status-line">
       <span class="ol-dot" id="ol-status-dot"></span>
       <span id="online-status-text">—</span>
     </div>
 
+    <!-- Matchup joueurs -->
     <div class="ol-matchup" id="online-matchup" style="display:none;">
-      <span id="online-p1-name" data-i18n="onlineChipPending">—</span>
-      <span class="ol-vs">VS</span>
-      <span id="online-p2-name" data-i18n="onlineChipPending">—</span>
+      <div class="ol-player-chip">
+        <div class="ol-player-avatar">J1</div>
+        <span class="ol-player-name" id="online-p1-name" data-i18n="onlineChipPending">En attente</span>
+      </div>
+      <div class="ol-vs-badge">VS</div>
+      <div class="ol-player-chip">
+        <div class="ol-player-avatar">J2</div>
+        <span class="ol-player-name" id="online-p2-name" data-i18n="onlineChipPending">En attente</span>
+      </div>
     </div>
 
     <!-- Code + partage -->
     <div id="online-roomcode-row" style="display:none;">
-      <div class="ol-code-row">
-        <span class="ol-code-label" data-i18n="onlineShare">Code :</span>
-        <span class="ol-code-val" id="online-roomcode">—</span>
-        <button class="ol-copy-btn" id="online-copy-code" type="button" title="Copier le code">
+      <div class="ol-code-card">
+        <div class="ol-code-info">
+          <span class="ol-code-label">
+            <span class="ol-code-label-dot" aria-hidden="true">●</span>
+            <span data-i18n="onlineShare">Partagez ce code</span>
+          </span>
+          <span class="ol-code-val" id="online-roomcode">—</span>
+        </div>
+        <button class="ol-copy-btn" id="online-copy-code" type="button" title="Copier le code" aria-label="Copier le code">
           <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <rect x="6" y="6" width="9" height="9" rx="2"/><path d="M3 12V3h9"/>
           </svg>
         </button>
       </div>
       <button class="ol-invite-btn" id="chal-share-smart" type="button">
-        ⚔️ <span data-i18n="onlineInviteBtn">Envoyer le défi</span>
+        <span class="ol-invite-icon" aria-hidden="true">⚔️</span>
+        <span data-i18n="onlineInviteBtn">Inviter un ami</span>
       </button>
     </div>
 
@@ -14087,7 +14477,7 @@ Patrimoine Amazigh • Idles Amaziɣ
     <div id="online-rematch" style="display:none;">
       <div class="ol-rematch-row">
         <span class="ol-rematch-chip" id="online-rm1-chip">J1</span>
-        <span>·</span>
+        <span class="ol-rematch-sep">·</span>
         <span class="ol-rematch-chip" id="online-rm2-chip">J2</span>
       </div>
       <button class="ol-rematch-btn" id="online-rematch-ready-btn" type="button" data-i18n="onlineReadyRematch">Je suis prêt</button>
@@ -14097,7 +14487,7 @@ Patrimoine Amazigh • Idles Amaziɣ
     <div id="online-autostart-banner">
       <span>⚔️ <span data-i18n="onlineAutoStartIn">Partie dans</span></span>
       <span class="autostart-count" id="autostart-count">3</span>
-      <button id="autostart-cancel-btn">✕</button>
+      <button id="autostart-cancel-btn" aria-label="Annuler">✕</button>
     </div>
 
     <button class="ol-start-btn" id="online-start" style="display:none;" type="button">
@@ -14111,7 +14501,7 @@ Patrimoine Amazigh • Idles Amaziɣ
     <div class="online-recent-list" id="online-recent-list"></div>
   </div>
 
-  <button class="back-btn" data-i18n="backToModes" id="back-to-modes-from-online-btn" type="button">← <span data-i18n="backToModes">Retour</span></button>
+  <button class="back-btn" data-i18n="backToModes" id="back-to-modes-from-online-btn" type="button">‹ <span data-i18n="backToModes">Retour</span></button>
 
   <!-- IDs fantômes pour compat JS -->
   <span id="ol-p1-slot" style="display:none"></span>
@@ -15298,9 +15688,13 @@ function _setOnlineStatus(msg) {
   // Also update global status text
   const glob = document.getElementById('online-status-global');
   if (glob) glob.textContent = msg || '';
-  // Show status card when we have a real message
+  // Show status card when we have a real message + masquer pré-connexion
   const statusCard = document.getElementById('online-status');
-  if (statusCard && msg && msg !== '—') statusCard.style.display = '';
+  if (statusCard && msg && msg !== '—') {
+    statusCard.style.display = '';
+    const pc = document.getElementById('ol-pre-connect');
+    if (pc) pc.style.display = 'none';
+  }
 }
 function _show(el, yes) { if (!el) return; el.style.display = yes ? '' : 'none'; }
 function _randCode(len=4) {
@@ -15328,6 +15722,13 @@ function onlineDisconnect() {
   // chatSeenIds est réinitialisé par clearOnlineChatState() (wrappé plus bas)
   online.fetching = false;
   try { _updateOnlineGameBar(); } catch(_) {}
+  // Réafficher les boutons pré-connexion (Créer / Rejoindre)
+  try {
+    const sc = document.getElementById('online-status');
+    const pc = document.getElementById('ol-pre-connect');
+    if (sc) sc.style.display = 'none';
+    if (pc) pc.style.display = '';
+  } catch(_) {}
 }
 
 // ── In-game online status bar ─────────────────────────────────
@@ -15616,6 +16017,11 @@ async function onlineConnectToRoom_Back4App(code, creating) {
 
   onlineDisconnect();
   online.room = code;
+  // Masquer les boutons pré-connexion, afficher le panel connecté
+  const _pc = document.getElementById('ol-pre-connect');
+  const _sc = document.getElementById('online-status');
+  if (_pc) _pc.style.display = 'none';
+  if (_sc) _sc.style.display = '';
   _show(onlineEls.roomCodeRow, true);
   if (onlineEls.roomCode) onlineEls.roomCode.textContent = code;
   _show(onlineEls.btnStart, false);
@@ -15783,6 +16189,8 @@ function onlineSendState(reason='sync') {
 
 async function onlineStartMatch_Back4App() {
   if (gameMode !== 'online') gameMode = 'online';
+  // Masquer le bouton quitter pendant la partie
+  try { const qb = document.getElementById('ol-quit-btn'); if (qb) qb.style.display = 'none'; } catch(_) {}
   if (!online.connected || !online.matchId) { _setOnlineStatus(t('onlineNoRoomActive', "Pas de salon actif.")); return; }
   if (!online.isHost) { _setOnlineStatus(t('onlineOnlyHostStart', "Seul l’hôte peut lancer la partie.")); return; }
   if (!(await _ensureParseReadyAsync())) { _setOnlineStatus(t('onlineBack4AppNotReady', "Back4App n'est pas prêt.")); return; }
@@ -16281,6 +16689,7 @@ onlineStatusConnecting: "Connexion…",
 onlineStatusTwoPlayersHost: "2 joueurs connectés. Tu peux lancer la partie.",
 onlineStatusTwoPlayersGuest: "2 joueurs connectés. En attente du lancement…",
 onlineChooseAction: "Choisis : créer ou rejoindre un salon.",
+onlineQuit: "Quitter le salon",
 
 playSpectator: "Mode Spectateur",
 installApp: "Installer",
@@ -16545,8 +16954,11 @@ onlineYourNameLabel: "Ton nom",
 onlineNameHint: "Ce nom est mémorisé sur ton appareil.",
 onlineRoomTitle: "Salon",
 onlineRoomDesc: "Crée un code ou rejoins un code existant",
-onlineSubtitle: "Créez un salon et partagez le code, ou rejoignez un salon existant.",
+onlineSubtitle: "Jouez en temps réel avec vos amis",
 onlineCreate: "Créer un salon",
+onlineCreateSub: "Invitez un ami avec un code",
+onlineJoinTitle: "Rejoindre un salon",
+onlineJoinHint: "Entrez le code de 6 caractères partagé par votre ami",
 onlineCreateDesc: "Génère un code",
 onlineJoin: "Rejoindre",
 onlineJoinDesc: "Entrer un code",
@@ -16969,8 +17381,11 @@ onlineYourNameLabel: "Isem-ik",
 onlineNameHint: "Isem-ayi yettwaḥrez .",
 onlineRoomTitle: "Taslaḍt",
 onlineRoomDesc: "Rnu tasarut neɣ kecem s yiwet yellan yakan",
-onlineSubtitle: "Bnu taslaḍt, teceyyeɛeḍ-as tasarut, neɣ rnu ɣer tin umeddakul-ik.",
+onlineSubtitle: "Urar, qesser d imeddukal-ik",
 onlineCreate: "Bnu taslaḍt",
+onlineCreateSub: "Nced-d ameddakul-ik s tsarut",
+onlineJoinTitle: "Kcem taslaḍt",
+onlineJoinHint: "Kcem tasarut n 4 ysekkilen i ak-d-yefka umeddakel-ik",
 onlineCreateDesc: "Ceyyeɛ tasarut",
 onlineJoin: "Qqim ɣer taslaḍt",
 onlineJoinDesc: "Sekcem tasarut",
@@ -16982,14 +17397,15 @@ onlineShare: "awi tasarut-a :",
 onlineOr: "Neɣ",
 variantDescTiddest: "5×5",
 variantDescNTlata: "3 pions · tic-tac-toe",
-variantDescDamma: "",
-variantDescDammaBessif: "",
+variantDescDamma: "Damma",
+variantDescDammaBessif: "Učči bessif",
 onlineStart: "Bdu urar",
 onlineStartDesc: "Qqimen-d i 2 yimyurar",
 onlineNamePlaceholder: "Amedya: Akli",
 onlineJoinCodePlaceholder: "Tasarut n umeddakel",
 onlineCopyCodeAria: "Glu tasarut",
 onlineChooseAction: "Fren: bnu neɣ qqim ɣer teslaḍt.",
+onlineQuit: "Ffeɣ seg teslaḍt",
 onlineCodeCopied: "Tasarut tettwanqal ✅",
 onlineStatusTwoPlayersHost: "2 yimyuraren qqimen-d. Tzemreḍ ad tebduḍ urar.",
 onlineStatusTwoPlayersGuest: "2 yimyuraren qqimen-d, arǧu ad ibdu urar…",
@@ -17018,9 +17434,9 @@ onlineRejoinLast: "Uɣal ɣer teslaḍ-t taneggarut",
 onlineRejoinLastDesc: "Tuqqna s tazzla",
 onlineRejoin3LastDesc: " 3 temliliyin tineggura",
 notYourTurn: "Mačči d nnuba-k.",
-onlineInviteBtn: "📤 Ɛreḍ-d ameddakul",
+onlineInviteBtn: "📤 Nced-d ameddakul",
 onlinePanelCode: "Tasarut kan",
-onlinePanelLink: "Aseɣwen n wurar",
+onlinePanelLink: "Iseɣwen n wurar",
 onlinePanelShare: "Azen Tinnubgga",
 onlineAutoJoinDetected: "Taslaḍt theyya : {code}",
 onlineAutoJoinWaiting: "sekcem isem-ik i wakken ad d-qqimeḍ ɣer wurar",
@@ -17034,7 +17450,7 @@ onlineLinkCopied: "Iseɣwi yettwanqal ✅",
 onlineCopyLinkAria: "Nqel iseɣwi",
 onlineShareLinkAria: "azen i umeddakul",
 onlineShareText: "Qqim ɣer teslaḍt n Tiddas:",
-onlineChallengeBtn: "⚔️ Feggi-d asnekcam",
+onlineChallengeBtn: "⚔️ Cqirrew ",
 onlineChallengeMsg: "Azen iseɣwi i umeddakul:",
 onlineCopied: "Yettwanqal ✅",
 onlineCopyCode: "Nqel",
@@ -17155,6 +17571,7 @@ onlineStatusConnecting: "Connecting…",
 onlineStatusTwoPlayersHost: "2 players connected. You can start the game.",
 onlineStatusTwoPlayersGuest: "2 players connected. Waiting for the host to start…",
 onlineChooseAction: "Choose: create or join a room.",
+onlineQuit: "Leave room",
 
 playSpectator: "Spectator Mode",
 installApp: "Install",
@@ -17417,8 +17834,11 @@ onlineYourNameLabel: "Your name",
 onlineNameHint: "This name is saved on your device.",
 onlineRoomTitle: "Room",
 onlineRoomDesc: "Create a code or join an existing one",
-onlineSubtitle: "Create a room and share the code, or join an existing one.",
+onlineSubtitle: "Play in real time with your friends",
 onlineCreate: "Create room",
+onlineCreateSub: "Invite a friend with a code",
+onlineJoinTitle: "Join a room",
+onlineJoinHint: "Enter the 6-character code shared by your friend",
 onlineCreateDesc: "Generates a code",
 onlineJoin: "Join",
 onlineJoinDesc: "Enter a code",
@@ -23927,15 +24347,25 @@ if (onlineBtn) {
 
     // Status global text element
     const statusGlobal = document.getElementById('online-status-global');
-    const _setGlobal = (msg) => { if (statusGlobal) statusGlobal.textContent = msg || ''; };
+    const _setGlobal = (msg) => {
+      if (!statusGlobal) return;
+      statusGlobal.textContent = msg || '';
+      statusGlobal.style.display = msg ? '' : 'none';
+    };
 
-    _setGlobal(_isBack4AppConfigured()
-      ? t('onlineChooseAction')
-      : t('onlineNotConfigured',"Back4App n'est pas configuré (clés manquantes)."));
+    // N'afficher le message global que si Back4App n'est pas configuré
+    if (!_isBack4AppConfigured()) {
+      _setGlobal(t('onlineNotConfigured',"Le mode en ligne n'est pas configuré."));
+      if (statusGlobal) statusGlobal.style.display = '';
+    }
 
-    // Show/hide status card
+    // Show/hide status card + masquer/afficher les boutons pré-connexion
     const statusCard = document.getElementById('online-status');
-    const _showStatusCard = (yes) => { if (statusCard) statusCard.style.display = yes ? '' : 'none'; };
+    const preConnect  = document.getElementById('ol-pre-connect');
+    const _showStatusCard = (yes) => {
+      if (statusCard) statusCard.style.display = yes ? '' : 'none';
+      if (preConnect)  preConnect.style.display  = yes ? 'none' : '';
+    };
 
     // Helpers accordion
     const _openAccordion  = (id) => { const el = document.getElementById(id); if (el) el.classList.add('open'); };
